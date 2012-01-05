@@ -3,48 +3,27 @@ install.packages(c('devtools', 'roxygen2', 'RSQLite', 'ipeds'),
 
 require(devtools)
 require(roxygen2)
-require(RSQLite)
-require(ipeds)
 
 setwd("~/Dropbox/Projects") #Mac
 setwd("C:/Dropbox/My Dropbox/Projects") #Windows
 
 #Package building
-document("irutils", clean=TRUE)
-document("irutils")
-check_doc("irutils")
-build("irutils", binary=FALSE)
-build("irutils", binary=TRUE)
-install("irutils")
-check("irutils")
-library(irutils)
-ls('package:irutils')
+document("ProjectVersion", clean=TRUE)
+document("ProjectVersion")
+check_doc("ProjectVersion")
+build("ProjectVersion", binary=FALSE)
+build("ProjectVersion", binary=TRUE)
+install("ProjectVersion")
+check("ProjectVersion")
+library(ProjectVersion)
+ls('package:ProjectVersion')
 
 #Build Vignette
-setwd("C:/Dropbox/My Dropbox/Projects/irutils")
+setwd("C:/Dropbox/My Dropbox/Projects/ProjectVersion")
 setwd(paste(getwd(), '/man/doc/', sep=''))
 getwd()
-Stangle('irutils.Rnw')
-Sweave('irutils.Rnw')
-texi2dvi('irutils.tex', pdf=TRUE)
-
-#Load included data
-data(pisa)
-
-
-#Setup the SQLite database
-data(surveys)
-drv = dbDriver("SQLite")
-conn = dbConnect(drv, dbname=paste(getwd(), '/irutils/data/ipeds.db', sep=''))
-saveIPEDStoDB(conn, surv=surveys$SurveyID, years=2010:2006)
-dbListTables(conn)
-
-dbGetQuery(conn, "SELECT SurveyID, Title FROM surveys")
-
-hd = dbReadTable(conn, 'HD')
-table(hd$year, useNA='ifany')
-dbGetQuery(conn, "SELECT SurveyID, Title FROM surveys")
-
-dbDisconnect(conn)
+Stangle('ProjectVersion.Rnw')
+Sweave('ProjectVersion.Rnw')
+texi2dvi('ProjectVersion.tex', pdf=TRUE)
 
 
