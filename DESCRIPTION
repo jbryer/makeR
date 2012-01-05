@@ -1,0 +1,27 @@
+Package: ProjectVersion
+Type: Package
+Title: Package for managing projects with multiple versions derived from a
+    single source repository.
+Version: 1.0
+Date: 2012-01-05
+Author: Jason Bryer <jason@bryer.org>
+Maintainer: Jason Bryer <jason@bryer.org>
+Description: An R package to help manage R projects (e.g. Sweave reports) where
+    multiple versions are created based upon a single source repository. For
+    example, a monthly report where each versions is identitcal with the
+    exception of easily definable parameters (e.g. date ranges for data
+    extraction, title, etc.).
+License: GPL
+LazyLoad: yes
+Depends:
+    tools,
+    XML
+Collate:
+    'Build.R'
+    'ProjectVersion-package.R'
+    'ProjectVersion.R'
+    'Version.R'
+    'buildVersion.R'
+    'newVersion.R'
+    'patchVersion.R'
+    'releaseVersion.R'

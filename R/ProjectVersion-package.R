@@ -12,7 +12,7 @@
 #'        single source repository.
 #' @author \email{jason@@bryer.org}
 #' @keywords institutional research
-#' @import tools
+#' @import tools XML
 NULL
 
 .onLoad <- function(libname, pkgname) {
