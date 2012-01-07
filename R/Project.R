@@ -1,9 +1,33 @@
-#' Constructor function to create a ProjectVersion project.
+#' Creates a new empty project.
+#'
+#' TODO: More documentation
+#' 
+#' @export
+newProject <- function(name=NULL, sourceDir="source", buildDir="build", 
+					   releaseDir="release", projectDir=getwd()) {
+	pv = list()
+	dir.create(projectDir, showWarnings=FALSE, recursive=TRUE)
+	pv$ProjectDir = projectDir
+	pv$ProjectFile = paste(projectDir, "/PROJECT.xml", sep='')
+	pv$CurrentBuild = buildNum
+	pv$ProjectName = name
+	pv$buildDir = buildDir
+	dir.create(pv$buildDir, showWarnings=FALSE, recursive=TRUE)
+	pv$sourceDir = sourceDir
+	dir.create(pv$sourceDir, showWarnings=FALSE, recursive=TRUE)
+	pv$releaseDir = releaseDir
+	dir.create(pv$releaseDir, showWarnings=FALSE, recursive=TRUE)
+	class(pv) <- "Project"
+	write.Project(pv)
+	return(pv)
+}
+
+#' Constructor function to create a Project project.
 #'
 #' TODO: Need more documentation 
 #'
 #' @export
-ProjectVersion <- function(projectDir=getwd()) {
+Project <- function(projectDir=getwd()) {
 	pv <- list()
 	
 	pv$ProjectDir <- projectDir
@@ -80,16 +104,16 @@ ProjectVersion <- function(projectDir=getwd()) {
 		pv$releaseDir = 'release'
 	}
 	
-	class(pv) <- "ProjectVersion"
+	class(pv) <- "Project"
 	return(pv)
 }
 
-#' Generic S3 method to print summary information about a ProjectVersion class.
+#' Generic S3 method to print summary information about a Project class.
 #'
 #' TODO: Need more documentation 
 #'
 #' @export
-print.ProjectVersion <- function(pv) {
+print.Project <- function(pv) {
 	cat(paste('Project Directory: ', pv$ProjectDir, '\n',
 			  'Source Directory: ', pv$sourceDir, '\n',
 			  'Build Directory: ', pv$buildDir, '\n',
@@ -106,12 +130,12 @@ print.ProjectVersion <- function(pv) {
 	print(pv$versions)
 }
 
-#' Writes a ProjectVersion XML file.
+#' Writes a Project XML file.
 #'
 #' TODO: Need more documentation 
 #'
 #' @export
-write.ProjectVersion <- function(pv) {
+write.Project <- function(pv) {
 	root = xmlNode("project", attrs=c(name=pv$ProjectName, 
 									  buildDir=pv$buildDir,
 									  releaseDir=pv$releaseDir,

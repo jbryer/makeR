@@ -1,13 +1,11 @@
-install.packages(c('devtools', 'roxygen2', 'RSQLite', 'ipeds'), 
-		repos=c('http://cran.r-project.org', 'http://r-forge.r-project.org'))
+install.packages(c('devtools', 'roxygen2'), repos=c('http://cran.r-project.org'))
 
 require(devtools)
 require(roxygen2)
 
-setwd("~/Dropbox/Projects") #Mac
-setwd("C:/Dropbox/My Dropbox/Projects") #Windows
-
+################################################################################
 #Package building
+setwd("~/Dropbox/Projects") #Mac
 document("makeR", clean=TRUE)
 document("makeR")
 check_doc("makeR")
@@ -20,7 +18,7 @@ ls('package:makeR')
 
 ################################################################################
 setwd('~/Dropbox/Projects/TestProject')
-pv = ProjectVersion()
+pv = Project()
 pv
 
 

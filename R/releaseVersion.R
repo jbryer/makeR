@@ -61,7 +61,7 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 	if(increment) {
 		#Increment the minor version number
 		pv$versions[[versionPosition]]$minor = as.numeric(pv$versions[[versionPosition]]$minor) + 1
-		write.ProjectVersion(pv)
+		write.Project(pv)
 	}
 	
 	return(pv)

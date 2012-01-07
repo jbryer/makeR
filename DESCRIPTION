@@ -18,10 +18,11 @@ Depends:
     XML
 Collate:
     'Build.R'
-    'ProjectVersion.R'
     'Version.R'
     'buildVersion.R'
     'newVersion.R'
     'patchVersion.R'
     'releaseVersion.R'
     'makeR-package.R'
+    'Project.R'
+    'properties.R'

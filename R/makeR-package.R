@@ -6,7 +6,7 @@
 #' definable parameters (e.g. date ranges for data extraction, title, etc.).
 #' 
 #' @name makeR-package
-#' @aliases ProjectVersion
+#' @aliases Project
 #' @docType package
 #' @title Package for managing projects with multiple versions derived from a
 #'        single source repository.
