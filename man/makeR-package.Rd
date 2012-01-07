@@ -1,7 +1,7 @@
 \docType{package}
-\name{ProjectVersion-package}
+\name{makeR-package}
 \alias{ProjectVersion}
-\alias{ProjectVersion-package}
+\alias{makeR-package}
 \title{Package for managing projects with multiple versions derived from a
        single source repository.}
 \description{
