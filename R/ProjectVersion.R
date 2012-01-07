@@ -102,6 +102,8 @@ print.ProjectVersion <- function(pv) {
 			cat(paste('  ', names(pv$properties)[i], ' = ', p[[1]]), '\n', sep='')
 		}
 	}
+	cat(paste('There are currently ', length(pv$versions), ' versions defined:\n', sep=''))
+	print(pv$versions)
 }
 
 #' Writes a ProjectVersion XML file.

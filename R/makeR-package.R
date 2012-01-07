@@ -5,7 +5,7 @@
 #' monthly report where each versions is identitcal with the exception of easily 
 #' definable parameters (e.g. date ranges for data extraction, title, etc.).
 #' 
-#' @name ProjectVersion-package
+#' @name makeR-package
 #' @aliases ProjectVersion
 #' @docType package
 #' @title Package for managing projects with multiple versions derived from a

@@ -1,4 +1,4 @@
-Package: ProjectVersion
+Package: makeR
 Type: Package
 Title: Package for managing projects with multiple versions derived from a
     single source repository.
@@ -18,10 +18,10 @@ Depends:
     XML
 Collate:
     'Build.R'
-    'ProjectVersion-package.R'
     'ProjectVersion.R'
     'Version.R'
     'buildVersion.R'
     'newVersion.R'
     'patchVersion.R'
     'releaseVersion.R'
+    'makeR-package.R'
