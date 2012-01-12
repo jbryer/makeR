@@ -7,7 +7,7 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 	wd = getwd()
 	
 	if(rebuild) {
-		buildDoc(pv, build=build, ...)
+		buildDoc(pv, version.major=major, ...)
 	}
 	
 	versionPosition = NULL	
@@ -52,7 +52,8 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 	filename = build$file
 	minorNum = build$minor
 	
-	fromFile = paste(pv$buildDir, '/', major, '.', version$minor, '-', buildNum, '/', filename, sep='')
+	fromFile = paste(pv$buildDir, '/', major, '.', version$minor, '-', buildNum, '/', 
+					 filename, sep='')
 	toFile = paste(pv$releaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
 				   major, '.', minorNum, '.', buildNum, '.pdf', sep='')
 	cat(paste('Copying', fromFile, 'to', toFile))

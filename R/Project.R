@@ -174,9 +174,12 @@ write.Project <- function(pv) {
 			build = xmlNode('build', attrs=c(major=b$major,
 											 minor=b$minor,
 											 build=b$build,
+											 name=b$name,
 											 timestamp=b$timestamp,
 											 R=b$R,
 											 platform=b$platform,
+											 nodename=b$nodename,
+											 user=b$user,
 											 file=b$file))
 			builds = addChildren(builds, build)
 		}

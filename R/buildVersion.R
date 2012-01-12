@@ -3,22 +3,16 @@
 #' TODO: Need more documentation 
 #'
 #' @export
-buildVersion <- function(pv, version.major=NULL, ...) {
-	builds = pv$root[['builds']]
-	buildNum = 1
-	if(!is.null(builds)) {
-		buildNum = as.integer(xmlAttrs(builds)[['current']]) + 1
-	} else {
-		builds = xmlNode("builds", attrs=c(current=buildNum))
-	}
+buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
+	#TODO: Use the major and minor versions parameters to rebuild a specific version
+	buildNum = pv$CurrentBuild + 1	
+	cv = pv$versions[[length(pv$versions)]]
+	majorNum = cv$major
+	minorNum = cv$minor
+	name = cv$name
 	
-	versions = pv$root[['versions']]
-	majors = xmlSApply(versions, xmlAttrs)['major',]
-	currentVersion = versions[which(majors == max(majors))]
-	majorNum = as.integer(xmlAttrs(currentVersion[[1]])[['major']])
-	minorNum = as.integer(xmlAttrs(currentVersion[[1]])[['minor']])
-	
-	cat(paste('Building verison ', majorNum, '.', minorNum, '-', buildNum, '...\n', sep=''))
+	cat(paste('Building verison ', ifelse(is.null(name), majorNum, name), '.', 
+			  minorNum, '-', buildNum, '...\n', sep=''))
 	
 	cat('Setting global properties...\n')
 	if(length(pv$properties) > 0) {
@@ -29,8 +23,6 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 		}
 	}
 	
-	cv = pv$versions[[majorNum]]
-	name = cv$name
 	cat('Setting version properties...\n')
 	if(length(cv$properties) > 0) {
 		for(i in 1:length(cv$properties)) {
@@ -41,15 +33,16 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 	}
 	
 	if(is.na(name)) {
-		buildDir = paste(pv$ProjectDir, '/', pv$buildDir, '/', majorNum, '.', minorNum, '-', buildNum, sep='')
+		buildDir = paste(pv$ProjectDir, '/', pv$buildDir, '/', majorNum, '.', minorNum, sep='')
 	} else {
-		buildDir = paste(pv$ProjectDir, '/', pv$buildDir, '/', name, '.', minorNum, '-', buildNum, sep='')
+		buildDir = paste(pv$ProjectDir, '/', pv$buildDir, '/', name, '.', minorNum, sep='')
 	}
 	dir.create(buildDir, recursive=TRUE, showWarnings=FALSE)
 	
 	cat('Copying source files...\n')
 	file.copy(
-		paste(pv$ProjectDir, '/', pv$sourceDir, '/', list.files(paste(pv$ProjectDir, '/', pv$sourceDir, '/', sep='')), sep=''),
+		paste(pv$ProjectDir, '/', pv$sourceDir, '/', 
+			  list.files(paste(pv$ProjectDir, '/', pv$sourceDir, '/', sep='')), sep=''),
 		to=buildDir, overwrite=TRUE, recursive=TRUE)
 	
 	wd = setwd(buildDir)
@@ -67,35 +60,27 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 	}
 	
 	#with(buildenv, {
-	cat('Running Stangle...\n')
-	Stangle(rnw[1])
-	cat('Running Sweave...\n')
-	Sweave(rnw[1], debug=TRUE)
-	cat('Running texi2dvi...\n')
-	texi2dvi(paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.tex', sep=''), pdf=TRUE)
+	for(i in 1:length(rnw)) {
+		cat('Running Stangle...\n')
+		Stangle(rnw[i])
+		cat('Running Sweave...\n')
+		Sweave(rnw[i], debug=TRUE)
+		cat('Running texi2dvi...\n')
+		texi2dvi(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''), pdf=TRUE)
+	}
 	#})
 	
 	sink()
 	
-	xmlAttrs(builds)[['current']] = as.character(buildNum)
-	
 	#Add a build entry
-	builds = addChildren(builds, xmlNode("build", attrs=c(
-		major=majorNum,
+	b = Build(major=majorNum,
 		minor=minorNum,
 		build=buildNum,
 		name = name,
-		timestamp=date(),
-		R=R.version$version.string,
-		platform=R.version$platform,
-		user=Sys.info()['user'],
-		nodename=Sys.info()['nodename'],
-		file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))))
-	pv$root[['builds']] <- builds
+		file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
+	pv$builds[[(length(pv$builds) + 1)]] = b
 	
-	cat('Saving project file...\n')
-	saveXML(pv$root, file=pv$ProjectFile)
 	setwd(wd)
-	pv = ProjectVersion(projectDir=pv$ProjectDir) #TODO: there is a more efficient way of doing this
+	write.Project(pv)
 	return(pv)
 }

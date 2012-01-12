@@ -4,6 +4,10 @@
 addProperty <- function(x, name, value) {
 	UseMethod("addProperty")
 }
+#'
+#'
+#' @export
+addProperty.default <- addProperty
 
 #'
 #'
@@ -25,6 +29,11 @@ addProperty.Project <- function(x, name, value) {
 removeProperty <- function(x, name, value) {
 	UseMethod("removeProperty")
 }
+
+#'
+#'
+#' @export
+removeProperty.default <- removeProperty
 
 #'
 #'
