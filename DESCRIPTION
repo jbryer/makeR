@@ -16,13 +16,16 @@ LazyLoad: yes
 Depends:
     tools,
     XML
+Suggests:
+    RCurl,lattice,chron,grid
 Collate:
     'Build.R'
     'Version.R'
     'buildVersion.R'
     'newVersion.R'
-    'patchVersion.R'
     'releaseVersion.R'
     'makeR-package.R'
     'Project.R'
     'properties.R'
+    'GoogleReader.R'
+    'calendarHeat.R'
