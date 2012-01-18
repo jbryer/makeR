@@ -15,5 +15,7 @@
 #' @import tools XML
 NULL
 
+`_AUTOSAVE` <- TRUE
+
 .onLoad <- function(libname, pkgname) {
 }

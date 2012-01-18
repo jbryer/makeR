@@ -3,14 +3,14 @@
 #' TODO: Need more documentation 
 #'
 #' @param buildXML an XML element.
-#' @export
-Build <- function(buildXML, 
-				  build=NULL, major=NULL, minor=NULL, name=NULL, 
+Build <- function(buildXML=NULL, 
+				  buildNum=NULL, major=NULL, minor=NULL, name=NULL, 
 				  timestamp=date(), 
 				  R=R.version$version.string, 
 				  platform=R.version$platform,
 				  user=Sys.info()['user'],
-				  nodename=Sys.info()['nodename']) {
+				  nodename=Sys.info()['nodename'],
+				  file=NULL) {
 	build = list()
 	if(!is.null(buildXML)) {
 		build$build = xmlAttrs(buildXML)[['build']]
@@ -32,7 +32,7 @@ Build <- function(buildXML,
 		build$nodename = xmlAttrs(buildXML)[['nodename']]
 		build$file = xmlAttrs(buildXML)[['file']] #TODO: Support multiple files
 	} else {
-		build$build = build
+		build$build = buildNum
 		build$major = major
 		build$minor = minor
 		build$name = name

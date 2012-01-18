@@ -1,6 +1,3 @@
-require(XML)
-require(RCurl)
-
 #' This function ruturns an XML tree of the RSS feed from the given URL.
 #'
 #' This function utilizes the (unofficial) Google Reader API to retrieve RSS
@@ -25,6 +22,9 @@ require(RCurl)
 #' @export
 #' @author Jason Bryer <\email{jason@@bryer.org}x>
 getRSSFeed <- function(feedURL, email, passwd, posts=1000) {
+	require(XML)
+	require(RCurl)
+
 	#Authenticate with Google
 	curlHandle = getCurlHandle(cookiefile="rcookies", ssl.verifyhost=FALSE, ssl.verifypeer=FALSE)
 	x = postForm("https://www.google.com/accounts/ClientLogin",

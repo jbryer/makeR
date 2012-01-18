@@ -22,7 +22,6 @@ Collate:
     'Build.R'
     'Version.R'
     'buildVersion.R'
-    'newVersion.R'
     'releaseVersion.R'
     'makeR-package.R'
     'Project.R'

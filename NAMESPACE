@@ -1,6 +1,5 @@
 export(Build)
 export(Project)
-export(Version)
 export(addProperty)
 export(addProperty.Project)
 export(addProperty.Version)

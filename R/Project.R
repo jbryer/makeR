@@ -4,21 +4,26 @@
 #' 
 #' @export
 newProject <- function(name=NULL, sourceDir="source", buildDir="build", 
-					   releaseDir="release", projectDir=getwd()) {
+					   releaseDir="release", projectDir=getwd(), properties=list()) {
 	pv = list()
 	dir.create(projectDir, showWarnings=FALSE, recursive=TRUE)
 	pv$ProjectDir = projectDir
 	pv$ProjectFile = paste(projectDir, "/PROJECT.xml", sep='')
-	pv$CurrentBuild = buildNum
+	pv$CurrentBuild = 0
 	pv$ProjectName = name
 	pv$buildDir = buildDir
-	dir.create(pv$buildDir, showWarnings=FALSE, recursive=TRUE)
+	dir.create(paste(projectDir, '/', pv$buildDir, sep=''), showWarnings=FALSE, recursive=TRUE)
 	pv$sourceDir = sourceDir
-	dir.create(pv$sourceDir, showWarnings=FALSE, recursive=TRUE)
+	dir.create(paste(projectDir, '/', pv$sourceDir, sep=''), showWarnings=FALSE, recursive=TRUE)
 	pv$releaseDir = releaseDir
-	dir.create(pv$releaseDir, showWarnings=FALSE, recursive=TRUE)
+	dir.create(paste(projectDir, '/', pv$releaseDir, sep=''), showWarnings=FALSE, recursive=TRUE)
+	pv$properties <- properties
+	pv$versions = list()
+	pv$builds = list()
 	class(pv) <- "Project"
-	write.Project(pv)
+	if(`_AUTOSAVE`) {
+		write.Project(pv)
+	}
 	return(pv)
 }
 
@@ -177,9 +182,9 @@ write.Project <- function(pv) {
 											 name=b$name,
 											 timestamp=b$timestamp,
 											 R=b$R,
-											 platform=b$platform,
-											 nodename=b$nodename,
-											 user=b$user,
+											 platform=b$platform[[1]],
+											 nodename=b$nodename[[1]],
+											 user=b$user[[1]],
 											 file=b$file))
 			builds = addChildren(builds, build)
 		}

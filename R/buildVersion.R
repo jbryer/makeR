@@ -5,7 +5,7 @@
 #' @export
 buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 	#TODO: Use the major and minor versions parameters to rebuild a specific version
-	buildNum = pv$CurrentBuild + 1	
+	buildNum = pv$CurrentBuild + 1
 	cv = pv$versions[[length(pv$versions)]]
 	majorNum = cv$major
 	minorNum = cv$minor
@@ -66,21 +66,24 @@ buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 		cat('Running Sweave...\n')
 		Sweave(rnw[i], debug=TRUE)
 		cat('Running texi2dvi...\n')
-		texi2dvi(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''), pdf=TRUE)
+		texi2pdf(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''))
 	}
 	#})
 	
 	sink()
 	
 	#Add a build entry
+	pv$CurrentBuild = buildNum
 	b = Build(major=majorNum,
 		minor=minorNum,
-		build=buildNum,
+		buildNum=buildNum,
 		name = name,
 		file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
 	pv$builds[[(length(pv$builds) + 1)]] = b
 	
 	setwd(wd)
-	write.Project(pv)
+	if(`_AUTOSAVE`) {
+		write.Project(pv)
+	}
 	return(pv)
 }
