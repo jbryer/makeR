@@ -1,4 +1,3 @@
-export(Build)
 export(Project)
 export(addProperty)
 export(addProperty.Project)
