@@ -1,1 +1,1 @@
-makeR	This demo will create a new makeR project that will provide a summary of R-Bloggers
+makeR	 This demo will create a new makeR project that will provide a summary of R-Bloggers
