@@ -1,0 +1,111 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[letterpaper]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{Sweave}
+
+\setkeys{Gin}{width=1\textwidth}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{Recent Activity on the R-Bloggers Site}
+\author{Jason M. Bryer}
+\date{\Sexpr{format(as.Date(startDate), '%B %Y')}}
+
+\begin{document}
+\maketitle                            
+
+\begin{abstract}
+This article provides an analysis of recent activity on the \href{http://r-bloggers.net}{R-bloggers} website
+\end{abstract}
+
+<<echo=FALSE,results=hide>>=
+require(makeR)
+require(wordcloud)
+require(XML)
+require(RCurl)
+
+# Sanitizes variables for displaying within LaTeX via Sexpr
+# Adds slashes to LaTeX special characters, which results in single-slash in tex output
+# http://stackoverflow.com/questions/5406071/r-sweave-latex-escape-variables-to-be-printed-in-latex
+sanitizeLatexR <- function(str) {
+	gsub('([#$%&~_\\^\\\\{}])', '\\\\\\1', str, perl = TRUE);
+}
+
+root = getRSSFeed(feedURL="http://r-bloggers.com/feed",
+				  email=email,
+				  passwd=passwd,
+				  posts=5000)
+saveXML(root, file='rbloggers.xml')
+
+entries = root[which(names(root) == "entry")]
+length(entries)
+posts = data.frame(title=character(0), author=character(0), 
+				   link=character(0), stringsAsFactors=FALSE)
+posts[1:length(entries),1:ncol(posts)] = NA
+posts$published = as.Date(NA)
+posts.categories = list()
+for(i in 1:length(entries)) {
+	entry = entries[[i]]
+	posts[i,]$title = unclass(xmlChildren(entry[['title']])$text)$value
+	posts[i,]$author = unclass(xmlChildren(entry[['author']][['name']])$text)$value
+	posts[i,]$link = xmlAttrs(entry[['link']])[['href']]
+	posts[i,]$published = as.Date(substr(unclass(
+		xmlChildren(entry[['published']])$text)$value, 1, 10))
+	categories = entry[which(names(entry) == "category")]
+	posts.categories[[i]] = list()
+	if(length(categories) > 1) { #Ignore the first category as it is used for Google Reader
+		l = list()
+		for(j in 2:length(categories)) {
+			l[(j-1)] = xmlAttrs(categories[[j]])[['term']]
+		}
+		posts.categories[[i]] = l
+	}
+}
+@
+
+R-Bloggers is a blog that aggregates other blogs about R. It provides a wealth of good information about R and is an great way of keeping up on the happenings in the R community. This document provides a summary of the latest posts on R-Bloggers. Figure \ref{heatmap} is a calendar heat map summarizing the number of posts per day. Figure \ref{wordcloud} is a word cloud summarizing the categories recent posts used. A list of posts from \Sexpr{format(as.Date(startDate), '%B %Y')} is provided below.
+
+\begin{center}
+\begin{figure}
+<<fig=TRUE,width=6.5,echo=FALSE,results=hide>>=
+cal = as.data.frame(table(posts$published))
+cal$Var1 = as.Date(cal$Var1)
+print(calendarHeat(cal$Var1, cal$Freq, color="r2b", varname="Number of Posts on R-Bloggers.com"))
+@
+\caption{Calendar Heat Map of Recent Posts on R-Bloggers}
+\label{heatmap}
+\end{figure}
+\end{center}
+
+\begin{center}
+\begin{figure}
+<<fig=TRUE,width=6.5,echo=FALSE,results=hide>>=
+require(wordcloud)
+ctab = unlist(posts.categories)
+ctab = unlist(strsplit(ctab, ' '))
+ctab = as.data.frame(table(ctab))
+ctab = ctab[-which(ctab$ctab == 'Uncategorized'),]
+print(wordcloud(ctab$ctab, ctab$Freq, min.freq=10))
+@
+\caption{Word Cloud of Recent Categories}
+\label{wordcloud}
+\end{figure}
+\end{center}
+
+\section{Posts for \Sexpr{format(as.Date(startDate), '%B %Y')}}
+\begin{enumerate}
+<<echo=FALSE,results=tex>>=
+monthly = posts[which(posts$published >= as.Date(startDate) & posts$published <= as.Date(endDate)),]
+for(i in 1:nrow(monthly)) {
+	cat( paste("\\item \\href{", monthly[i,'link'], "}{", sanitizeLatexR(monthly[i,'title']), "} by ", 
+				 sanitizeLatexR(monthly[i,'author']), " on ", monthly[i,'published'], '\n', sep='') )
+}
+@
+\end{enumerate}
+
+\end{document}
+
