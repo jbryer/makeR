@@ -4,7 +4,7 @@
 \usage{
   newProject(name = NULL, sourceDir = "source",
     buildDir = "build", releaseDir = "release",
-    projectDir = getwd())
+    projectDir = getwd(), properties = list())
 }
 \description{
   TODO: More documentation
