@@ -70,8 +70,8 @@ for(i in 1:length(entries)) {
 R-Bloggers is a blog that aggregates other blogs about R. It provides a wealth of good information about R and is an great way of keeping up on the happenings in the R community. This document provides a summary of the latest posts on R-Bloggers. Figure \ref{heatmap} is a calendar heat map summarizing the number of posts per day. Figure \ref{wordcloud} is a word cloud summarizing the categories recent posts used. A list of posts from \Sexpr{format(as.Date(startDate), '%B %Y')} is provided below.
 
 \begin{center}
-\begin{figure}
-<<fig=TRUE,width=6.5,echo=FALSE,results=hide>>=
+\begin{figure}[h!]
+<<fig=TRUE,width=6.5,height=4.0,echo=FALSE,results=hide>>=
 cal = as.data.frame(table(posts$published))
 cal$Var1 = as.Date(cal$Var1)
 print(calendarHeat(cal$Var1, cal$Freq, color="r2b", varname="Number of Posts on R-Bloggers.com"))
@@ -96,6 +96,7 @@ print(wordcloud(ctab$ctab, ctab$Freq, min.freq=10))
 \end{figure}
 \end{center}
 
+\clearpage
 \section{Posts for \Sexpr{format(as.Date(startDate), '%B %Y')}}
 \begin{enumerate}
 <<echo=FALSE,results=tex>>=
