@@ -59,7 +59,8 @@ buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 			 append=TRUE, split=FALSE)
 	}
 	
-	#with(buildenv, {
+	success = FALSE
+	try( {
 	for(i in 1:length(rnw)) {
 		cat('Running Stangle...\n')
 		Stangle(rnw[i])
@@ -67,22 +68,25 @@ buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 		Sweave(rnw[i], debug=TRUE)
 		cat('Running texi2dvi...\n')
 		texi2pdf(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''))
+		success = TRUE
 	}
-	#})
+	})
 	
 	sink()
 	
 	#Add a build entry
-	pv$CurrentBuild = buildNum
-	b = Build(major=majorNum,
-		minor=minorNum,
-		buildNum=buildNum,
-		name = name,
-		file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
-	pv$builds[[(length(pv$builds) + 1)]] = b
+	if(success) {
+		pv$CurrentBuild = buildNum
+		b = Build(major=majorNum,
+			minor=minorNum,
+			buildNum=buildNum,
+			name = name,
+			file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
+		pv$builds[[(length(pv$builds) + 1)]] = b
+	}
 	
 	setwd(wd)
-	if(`_AUTOSAVE`) {
+	if(success & `_AUTOSAVE`) {
 		write.Project(pv)
 	}
 	return(pv)
