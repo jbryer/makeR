@@ -4,13 +4,14 @@
 #'
 #' @export
 releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
-	wd = getwd()
+	wd = setwd(pv$ProjectDir)
 	
 	if(rebuild) {
-		buildDoc(pv, version.major=major, ...)
+		buildVersion(pv, version.major=major, ...)
 	}
 	
 	versionPosition = NULL	
+	version = NULL
 	if(!is.null(major)) {
 		if(is.numeric(major)) {
 			version = pv$versions[[major]]
@@ -32,6 +33,7 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 		version = pv$versions[[versionPosition]]
 	}
 	
+	major = NULL
 	if(!is.null(version$name)) {
 		major = version$name
 	} else {
@@ -44,26 +46,28 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 	for(i in length(pv$builds):1) {
 		if(pv$builds[[i]]$major == major | pv$builds[[i]]$name == major) {
 			build = pv$builds[[i]]
-			buildNum = pv$builds[[i]]$build
 			break()
 		}
 	}
-	
+	buildNum = build$build
 	filename = build$file
 	minorNum = build$minor
 	
-	fromFile = paste(pv$buildDir, '/', major, '.', version$minor, '-', buildNum, '/', 
+	fromFile = paste(pv$buildDir, '/', major, '.', version$minor, '/', 
 					 filename, sep='')
 	toFile = paste(pv$releaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
-				   major, '.', minorNum, '.', buildNum, '.pdf', sep='')
+				   major, '.', minorNum, '.pdf', sep='')
 	cat(paste('Copying', fromFile, 'to', toFile))
 	file.copy(fromFile, toFile)
 	
 	if(increment) {
 		#Increment the minor version number
 		pv$versions[[versionPosition]]$minor = as.numeric(pv$versions[[versionPosition]]$minor) + 1
-		write.Project(pv)
+		if(`_AUTOSAVE`) {
+			write.Project(pv)
+		}
 	}
 	
+	if(!is.null(wd)) setwd(wd)
 	return(pv)
 }

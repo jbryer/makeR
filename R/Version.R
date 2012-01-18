@@ -2,7 +2,7 @@
 #'
 #' TODO: Need more documentation 
 #'
-#' @export
+#' 
 Version <- function(ver) {
 	version = list()
 	version$major = xmlAttrs(ver)[['major']]
@@ -23,11 +23,11 @@ Version <- function(ver) {
 				version$properties[n] = as.numeric(v)
 			} else if(t == 'logical') {
 				version$properties[n] = as.logical(v)
-				#} else if(t == 'date') {
-				#	version$properties[n] = as.Date(v)
-				} else {
-					version$properties[n] = v
-				}
+			#} else if(t == 'date') {
+			#	version$properties[n] = as.Date(v)
+			} else {
+				version$properties[n] = v
+			}
 		}
 	}
 	if('name' %in% names(xmlAttrs(ver))) {
@@ -37,6 +37,25 @@ Version <- function(ver) {
 	}
 	class(version) = 'Version'
 	return(version)
+}
+
+#' Creates a new version of the project.
+#'
+#' TODO: Need more documentation 
+#'
+#' @export
+newVersion <- function(proj, name=NA, properties=list()) {
+	version = list()
+	version$major = length(proj$versions) + 1
+	version$minor = 0
+	version$name = name
+	version$properties = properties
+	class(version) = "Version"
+	proj$versions[[version$major]] = version
+	if(`_AUTOSAVE`) {
+		write.Project(proj)
+	}
+	return(proj)
 }
 
 #' Generic S3 method for printing information about a Version class.
