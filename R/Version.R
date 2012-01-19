@@ -1,8 +1,5 @@
-#' Constructor for a Version class.
-#'
-#' TODO: Need more documentation 
-#'
-#' 
+#' Constructor for a Version class. This is an interal method that builds a
+#' Version class from XML.
 Version <- function(ver) {
 	version = list()
 	version$major = xmlAttrs(ver)[['major']]
@@ -45,13 +42,14 @@ Version <- function(ver) {
 #'
 #' @export
 newVersion <- function(proj, name=NA, properties=list()) {
+	if(`_AUTOSAVE`) proj = checkProject(proj)
 	version = list()
 	version$major = length(proj$versions) + 1
 	version$minor = 0
 	version$name = name
 	version$properties = properties
 	class(version) = "Version"
-	proj$versions[[version$major]] = version
+	proj$versions[[as.character(version$major)]] = version
 	if(`_AUTOSAVE`) {
 		write.Project(proj)
 	}

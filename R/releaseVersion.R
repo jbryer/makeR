@@ -4,6 +4,8 @@
 #'
 #' @export
 releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
+	if(`_AUTOSAVE`) pv = checkProject(pv)
+
 	wd = setwd(pv$ProjectDir)
 	
 	if(rebuild) {
@@ -64,7 +66,7 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 		#Increment the minor version number
 		pv$versions[[versionPosition]]$minor = as.numeric(pv$versions[[versionPosition]]$minor) + 1
 		if(`_AUTOSAVE`) {
-			write.Project(pv)
+			pv = write.Project(pv)
 		}
 	}
 	
