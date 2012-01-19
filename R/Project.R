@@ -23,8 +23,21 @@ newProject <- function(name=NULL, sourceDir="source", buildDir="build",
 	class(pv) <- "Project"
 	if(`_AUTOSAVE`) {
 		write.Project(pv)
+		pv$file.info = file.info(pv$ProjectFile)
 	}
 	return(pv)
+}
+
+#' This internal method will check to see if the Project class is current with
+#' respect to the PROJECT.xml file. If it is out-of-date it will re-read the XML
+#' file and return a new Project object.
+checkProject <- function(pv) {
+	finfo = file.info(pv$ProjectFile)
+	if(finfo$mtime > pv$file.info$mtime) {
+		return(Project(pv$ProjectDir))
+	} else {
+		return(pv)
+	}
 }
 
 #' Constructor function to create a Project project.
@@ -37,6 +50,7 @@ Project <- function(projectDir=getwd()) {
 	
 	pv$ProjectDir <- projectDir
 	pv$ProjectFile <- paste(projectDir, "/PROJECT.xml", sep='')
+	pv$file.info = file.info(pv$ProjectFile)
 	
 	pv$doc <- xmlTreeParse(pv$ProjectFile, getDTD=FALSE)
 	pv$root <- xmlRoot(pv$doc)
@@ -69,22 +83,21 @@ Project <- function(projectDir=getwd()) {
 	pv$versions = list()
 	if(length(versions) > 0) {
 		for(ver in 1:length(versions)) {
-			v = Version(versions[[ver]])
+			v = makeR:::Version(versions[[ver]])
 			pv$versions[[v$major]] = v
 		}
 	}
 	
 	builds = pv$root[['builds']]
-	buildNum = 1
 	pv$builds = list()
 	if(!is.null(builds)) {
 		buildNum = as.integer(xmlAttrs(builds)[['current']])
 		for(b in 1:length(builds)) {
-			build = Build(builds[[b]])
+			build = makeR:::Build(builds[[b]])
 			pv$builds[[build$build]] = build
 		}
 	}
-	pv$CurrentBuild = buildNum
+	pv$CurrentBuild = length(pv$builds)
 	
 	pv$ProjectName = ''
 	if('name' %in% names(xmlAttrs(pv$root))) {
@@ -191,5 +204,7 @@ write.Project <- function(pv) {
 		root = addChildren(root, builds)
 	}
 	pv$root = root
-	saveXML(pv$root, file=pv$ProjectFile)	
+	saveXML(pv$root, file=pv$ProjectFile)
+	pv$file.info = file.info(pv$ProjectFile)
+	return(pv)
 }
