@@ -3,7 +3,9 @@
 #' TODO: Need more documentation 
 #'
 #' @export
-buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
+buildVersion <- function(pv, version.major=NULL, ...) {
+	if(`_AUTOSAVE`) pv = checkProject(pv)
+	
 	#TODO: Use the major and minor versions parameters to rebuild a specific version
 	buildNum = pv$CurrentBuild + 1
 	cv = pv$versions[[length(pv$versions)]]
@@ -61,15 +63,15 @@ buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 	
 	success = FALSE
 	try( {
-	for(i in 1:length(rnw)) {
-		cat('Running Stangle...\n')
-		Stangle(rnw[i])
-		cat('Running Sweave...\n')
-		Sweave(rnw[i], debug=TRUE)
-		cat('Running texi2dvi...\n')
-		texi2pdf(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''))
-		success = TRUE
-	}
+		for(i in 1:length(rnw)) {
+			cat('Running Stangle...\n')
+			Stangle(rnw[i])
+			cat('Running Sweave...\n')
+			Sweave(rnw[i], debug=TRUE)
+			cat('Running texi2dvi...\n')
+			texi2pdf(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''))
+			success = TRUE
+		}
 	})
 	
 	sink()
@@ -82,12 +84,12 @@ buildVersion <- function(pv, version.major=NULL, version.minor=NULL, ...) {
 			buildNum=buildNum,
 			name = name,
 			file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
-		pv$builds[[(length(pv$builds) + 1)]] = b
+		pv$builds[[as.character(length(pv$builds) + 1)]] = b
 	}
 	
 	setwd(wd)
 	if(success & `_AUTOSAVE`) {
-		write.Project(pv)
+		pv = write.Project(pv)
 	}
 	return(pv)
 }
