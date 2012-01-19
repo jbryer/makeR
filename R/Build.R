@@ -1,7 +1,5 @@
-#' Constructor for a Build class.
-#'
-#' TODO: Need more documentation 
-#'
+#' Constructor for a Build class. This is an interal method used to create a
+#' Build class/object.
 #' @param buildXML an XML element.
 Build <- function(buildXML=NULL, 
 				  buildNum=NULL, major=NULL, minor=NULL, name=NULL, 
