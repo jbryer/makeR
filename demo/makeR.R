@@ -23,22 +23,50 @@ file.copy(paste(getwd(), '/rbloggers/Sweave.sty', sep=''),
 		  paste(projectDir, '/source/Sweave.sty', sep=''))
 
 ## Create a new makeR project
-myProject = newProject(name="RBloggers", projectDir=projectDir, properties=list(
+myProject = Project(name="RBloggers", projectDir=projectDir, properties=list(
 			email=email, passwd=passwd))
 
+myProject$save()
+
 ## Create the first version. This will be for summarizing December 2011 posts.
-myProject = newVersion(myProject, name='2011-12', properties=list(
+myProject$newVersion(name='2011-12', properties=list(
 			startDate='2011-12-01', endDate='2011-12-31'))
+
+## Add Project property
+myProject$addProperty("author", "Jason Bryer")
 
 ## Print the project summary
 myProject
 
+## Can add properties to a specific version
+myProject$Versions[[1]]$addProperty("test", "value")
+
 ## Build the initial version.
-myProject = buildVersion(myProject)
-myProject$builds ## See that the build completed successfully
+myProject$build()
+myProject$Builds ## See that the build completed successfully
 
 ## Release the latest version
-myProject = releaseVersion(myProject)
+myProject$release()
+
+## Create the second version. This will be for summarizing Januar 2012 posts.
+myProject$newVersion(name='2012-01', properties=list(
+	startDate='2012-01-01', endDate='2012-01-31'))
+myProject
+
+## Build version 2
+myProject$build()
+myProject$Builds ## See that the build completed successfully
+
+## Release version 2
+myProject$release()
+
+## Get the list of released files
+myProject$getReleases()
+
+## Remove the project and reload it from the file
+rm(myProject)
+myProject <- Project(projectDir=projectDir)
+myProject
 
 ## Clean-up
 setwd(wd)

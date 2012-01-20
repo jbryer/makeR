@@ -18,7 +18,7 @@
 #' @param passwd the password for the Google Reader account
 #' @param posts the number of posts to return
 #' @return the root \code{XMLNode} for the RSS feed.
-#' @seealso \code{\link{/xmlRoot}} for the format of the returned XML tree
+#' @seealso \code{\link{xmlRoot}} for the format of the returned XML tree
 #' @export
 #' @author Jason Bryer <\email{jason@@bryer.org}x>
 getRSSFeed <- function(feedURL, email, passwd, posts=1000) {

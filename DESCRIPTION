@@ -2,7 +2,7 @@ Package: makeR
 Type: Package
 Title: Package for managing projects with multiple versions derived from a
     single source repository.
-Version: 1.0
+Version: 0.9
 Date: 2012-01-05
 Author: Jason Bryer <jason@bryer.org>
 Maintainer: Jason Bryer <jason@bryer.org>
@@ -17,7 +17,7 @@ Depends:
     tools,
     XML
 Suggests:
-    RCurl,lattice,chron,grid
+    RCurl,lattice,chron,grid,cacheSweave
 Collate:
     'Build.R'
     'Version.R'
@@ -25,6 +25,6 @@ Collate:
     'releaseVersion.R'
     'makeR-package.R'
     'Project.R'
-    'properties.R'
     'GoogleReader.R'
     'calendarHeat.R'
+    'writeProject.R'

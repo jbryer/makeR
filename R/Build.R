@@ -1,6 +1,19 @@
+#' This is an internal method and should not be called directly.
+#'
 #' Constructor for a Build class. This is an interal method used to create a
 #' Build class/object.
+#'
 #' @param buildXML an XML element.
+#' @param buildNum new build number.
+#' @param major major version number
+#' @param minor minor version number
+#' @param name the name of the version
+#' @param timestamp the time the file was built
+#' @param R the R version information
+#' @param platform the platform the file was built
+#' @param user the user that performed the build
+#' @param nodename the name of the node on which this file was built
+#' @param file the name of the file that was built. This is typicall a PDF.
 Build <- function(buildXML=NULL, 
 				  buildNum=NULL, major=NULL, minor=NULL, name=NULL, 
 				  timestamp=date(), 
@@ -11,35 +24,35 @@ Build <- function(buildXML=NULL,
 				  file=NULL) {
 	build = list()
 	if(!is.null(buildXML)) {
-		build$build = xmlAttrs(buildXML)[['build']]
+		build$Build = xmlAttrs(buildXML)[['build']]
 		if('major' %in% names(xmlAttrs(buildXML))) {
-			build$major = xmlAttrs(buildXML)[['major']]
+			build$Major = xmlAttrs(buildXML)[['major']]
 		} else {
-			build$major = NA
+			build$Major = NA
 		}
-		build$minor = xmlAttrs(buildXML)[['minor']]
+		build$Minor = xmlAttrs(buildXML)[['minor']]
 		if('name' %in% names(xmlAttrs(buildXML))) {
-			build$name = xmlAttrs(buildXML)[['name']]
+			build$Name = xmlAttrs(buildXML)[['name']]
 		} else {
-			build$name = NA
+			build$Name = NA
 		}
-		build$timestamp = xmlAttrs(buildXML)[['timestamp']]
+		build$Timestamp = xmlAttrs(buildXML)[['timestamp']]
 		build$R = xmlAttrs(buildXML)[['R']]
-		build$platform = xmlAttrs(buildXML)[['platform']]
-		build$user = xmlAttrs(buildXML)[['user']]
-		build$nodename = xmlAttrs(buildXML)[['nodename']]
-		build$file = xmlAttrs(buildXML)[['file']] #TODO: Support multiple files
+		build$Platform = xmlAttrs(buildXML)[['platform']]
+		build$User = xmlAttrs(buildXML)[['user']]
+		build$Nodename = xmlAttrs(buildXML)[['nodename']]
+		build$File = xmlAttrs(buildXML)[['file']] #TODO: Support multiple files
 	} else {
-		build$build = buildNum
-		build$major = major
-		build$minor = minor
-		build$name = name
-		build$timestamp = timestamp
+		build$Build = buildNum
+		build$Major = major
+		build$Minor = minor
+		build$Name = name
+		build$Timestamp = timestamp
 		build$R = R
-		build$platform = platform
-		build$user = user
-		build$nodename = nodename
-		build$file = file #TODO: Support multiple files		
+		build$Platform = platform
+		build$User = user
+		build$Nodename = nodename
+		build$File = file #TODO: Support multiple files		
 	}
 	class(build) = 'Build'
 	return(build)
@@ -47,13 +60,15 @@ Build <- function(buildXML=NULL,
 
 #' Generic S3 method to print information about a Build class.
 #'
-#' TODO: Need more documentation 
-#'
+#' @param x the Build
+#' @param ... other non-specified parameters
+#' @method print Build
+#' @S3method print Build
 #' @export
 print.Build <- function(x, ...) {
 	cat(paste(
-		'Build ', x$build, ' for version ', x$major, '.', x$minor, ' (', x$name, ')\n',
-		'   Built on ', x$timestamp, ' using ', x$R, '\n',
-		'   File built: ', x$file,
+		'Build ', x$Build, ' for version ', x$Major, '.', x$Minor, ' (', x$Name, ')\n',
+		'   Built on ', x$Timestamp, ' using ', x$R, '\n',
+		'   File built: ', x$File,
 		sep=''))
 }

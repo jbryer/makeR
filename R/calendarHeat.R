@@ -37,6 +37,7 @@ require(lattice); require(chron); require(grid)
 #'        r2g (red to green), and w2b (white to blue).
 #' @param varname varaible names
 #' @param date.form the format of the Date column
+#' @param ... other non-specified parameters
 #' @author Paul Bleicher
 #' @export
 calendarHeat <- function(dates, 

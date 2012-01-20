@@ -1,28 +1,25 @@
+#' This is an internal method and should not be called directly.
+#'
 #' Release the latest built version.
 #'
-#' TODO: Need more documentation 
-#'
-#' @export
-releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
-	if(`_AUTOSAVE`) pv = checkProject(pv)
-
+#' @param pv the Project
+#' @param major the major version number or name that should be released.
+#' @param increment should the minor version number be incremented.
+#' @param ... other non-specified parameters
+releaseVersion <- function(pv, major=NULL, increment=TRUE, ...) {
 	wd = setwd(pv$ProjectDir)
-	
-	if(rebuild) {
-		buildVersion(pv, version.major=major, ...)
-	}
 	
 	versionPosition = NULL	
 	version = NULL
 	if(!is.null(major)) {
 		if(is.numeric(major)) {
-			version = pv$versions[[major]]
+			version = pv$Versions[[major]]
 			versionPosition = major
 		} else {
 			version = NULL
-			for(i in length(pv$versions):1) {
-				if(pv$versions[[i]]$name == major) {
-					version = pv$versions[[i]]
+			for(i in length(pv$Versions):1) {
+				if(pv$Versions[[i]]$name == major) {
+					version = pv$Versions[[i]]
 					versionPosition = i
 				}
 			}
@@ -31,45 +28,47 @@ releaseVersion <- function(pv, major=NULL, rebuild=FALSE, increment=TRUE, ...) {
 			}
 		}
 	} else {
-		versionPosition = length(pv$versions)
-		version = pv$versions[[versionPosition]]
+		versionPosition = length(pv$Versions)
+		version = pv$Versions[[versionPosition]]
 	}
 	
 	major = NULL
-	if(!is.null(version$name)) {
-		major = version$name
+	if(!is.null(version$Name)) {
+		major = version$Name
 	} else {
-		major = version$major
+		major = version$Major
 	}
 	
-	releaseDir = paste(pv$ProjectDir, '/', pv$releaseDir, '/', sep='')
+	releaseDir = paste(pv$ProjectDir, '/', pv$ReleaseDir, '/', sep='')
 	dir.create(releaseDir, recursive=TRUE, showWarnings=FALSE)
 	
-	for(i in length(pv$builds):1) {
-		if(pv$builds[[i]]$major == major | pv$builds[[i]]$name == major) {
-			build = pv$builds[[i]]
+	for(i in length(pv$Builds):1) {
+		if(pv$Builds[[i]]$Major == major | pv$Builds[[i]]$Name == major) {
+			build = pv$Builds[[i]]
 			break()
 		}
 	}
-	buildNum = build$build
-	filename = build$file
-	minorNum = build$minor
+	buildNum = build$Build
+	filename = build$File
+	minorNum = build$Minor
 	
-	fromFile = paste(pv$buildDir, '/', major, '.', version$minor, '/', 
+	fromFile = paste(pv$BuildDir, '/', major, '.', version$Minor, '/', 
 					 filename, sep='')
-	toFile = paste(pv$releaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
+	toFile = paste(pv$ReleaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
 				   major, '.', minorNum, '.pdf', sep='')
 	cat(paste('Copying', fromFile, 'to', toFile))
 	file.copy(fromFile, toFile)
 	
 	if(increment) {
 		#Increment the minor version number
-		pv$versions[[versionPosition]]$minor = as.numeric(pv$versions[[versionPosition]]$minor) + 1
-		if(`_AUTOSAVE`) {
-			pv = write.Project(pv)
-		}
+		versions = pv$Versions
+		versions[[versionPosition]]$Minor = as.numeric(versions[[versionPosition]]$Minor) + 1
+		assign("Versions", versions, envir=pv)
 	}
 	
+	if(`_AUTOOPEN`) {
+		try(system(paste("open \"", toFile, "\"", sep='')))
+	}
 	if(!is.null(wd)) setwd(wd)
-	return(pv)
+	invisible(pv)
 }
