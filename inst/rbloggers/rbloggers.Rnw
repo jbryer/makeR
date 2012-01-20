@@ -12,7 +12,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{Recent Activity on the R-Bloggers Site}
-\author{Jason M. Bryer}
+\author{\Sexpr{author}}
 \date{\Sexpr{format(as.Date(startDate), '%B %Y')}}
 
 \begin{document}
