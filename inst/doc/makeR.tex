@@ -18,7 +18,7 @@
 \begin{article}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\title{makeR: An R Package for Managing Document Versions}
+\title{makeR: An R Package for Managing Document Templates and Versions}
 \author{by Jason M. Bryer}
 
 \maketitle
@@ -32,7 +32,7 @@ R \citep{rcore}, \LaTeX{} \citep{latex}, and Sweave \citep{sweave} have proven t
 \begin{figure*}
 \vspace*{.1in}
 \framebox[\textwidth]{\hfill \raisebox{0in}{\rule{0in}{0in}}
-\includegraphics[width=\textwidth]{makeRWorkflow.pdf}}
+\includegraphics[width=\textwidth]{makeRClassDiagram.pdf}}
 \caption{\label{figure:projectxml}\pkg{makeR} structure}
 \end{figure*}
 
@@ -45,6 +45,9 @@ Consider, for example, a new project that contains a file \file{Example.Rnw} in 
 
 \section{Properties}
 Properties are what differentiate one version from another and can be defined a the project level or version level. When \pkg{makeR} builds a document project level properties will be assigned before version level properties thereby giving version level properties priority over project level properties. The generic functions \code{addProperty} and \code{removeProperty}, whereby the first parameter is either objects of class type \code{Project} or \code{Version}, provide an interface for manipulating properties. 
+
+\section{Package framework}
+Figure \ref{figure:projectxml} depicts the internal representation of a \pkg{makeR} project. All interaction with a project will occur through the \code{Project} class object. By convention, all properties of classes begin with a capital letter and are represented in the boxes with dashed lined borders. Functions (or methods) begin with a lowercase letter and are represented in shaded boxes. Class objects and lists are represented by rounded squares. Project, Version, and Build are special classes for \pkg{makeR} whereas Versions and Builds are simply built in R lists. All manipulation of a project should be done through the appropriate functions. Although the attributes (i.e. elements of a list or class) are accessible given R's programming framework, doing so could result in unexpected results.
 
 \section{Example}
 
@@ -118,12 +121,8 @@ The \file{PROJECT.xml} file defines the properties, versions, and builds of a pa
 
 \section{Summary}
 
-This file is only a basic article template. For full details of \emph{The R Journal}
-style and information on how to prepare your article for submission, see the
-\href{http://journal.r-project.org/latex/RJauthorguide.pdf}{Instructions for Authors}.
 
 \section{Package development}
-
 The latest stable version of \pkg{makeR} can be installed from your local CRAN server. Development versions are hosted on \href{http://github.com/jbryer/ProjectVersion}{Github}. The latest development version can be installed using the \pkg{devtools} \citep{devtools} package:
 
 \begin{example}
