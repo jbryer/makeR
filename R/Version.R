@@ -53,6 +53,9 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 	}
 	version$pv = pv
 
+	version$getProperties <- function() {
+		return(unlist(version$Properites))
+	}
 	version$addProperty <- function(name, value) { 
 		p <- version$Properties
 		p[[name]] <- value 

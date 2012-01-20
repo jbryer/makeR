@@ -69,6 +69,9 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		}
 		invisible()
 	}
+	pv$getProperties <- function() {
+		return(unlist(pv$Properites))
+	}
 	pv$addProperty <- function(name, value) { 
 		p <- pv$Properties
 		p[[name]] <- value 
