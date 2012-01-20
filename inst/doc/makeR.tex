@@ -27,7 +27,7 @@
 The idea of build automation is not new. \href{http://www.gnu.org/s/make/}{GNU Make} and \href{http://ant.apache.org}{Java Ant} are well established and robust build automation systems but require the use and installation of additional software. The \pkg{makeR} package provides a simplified framework written entirely in R to manage Sweave projects where multiple versions are created based upon a single source repository. For example, a monthly report where each version is identical, with perhaps the exception of easily extracted properties (e.g. date ranges for data extraction, title, etc.). An example project summarizing recent posts from R-Bloggers is provided.
 }
 
-R, \LaTeX{}, and Sweave have proven to be incredibly useful for conducting reproducible research. However, managing document versions within R is limited. The \pkg{makeR} package attempts to provide the same ease-of-use for document versioning that the \pkg{devtools} \citep{devtools} and \pkg{ProjectTemplate} \citep{projecttemplate} packages have provided for package development and data analysis, respectively. This package attempts to solve the problem where multiple versions of a document are required but the underlying analysis and typesetting code remains static or can be abstracted through the use of variables or properties. For example, many researchers conduct monthly, quarterly, or annual reports where the only difference from version-to-version, from an analysis and typesetting perspective, is the data input. Clearly R and \LaTeX{} are an ideal solution to this problem. The \pkg{makeR} package provides a framework to automate the process of generating new documents from a single source repository.
+R \citep{rcore}, \LaTeX{} \citep{latex}, and Sweave \citep{sweave} have proven to be incredibly useful for conducting reproducible research. However, managing document versions within R is limited. The \pkg{makeR} package attempts to provide the same ease-of-use for document versioning that the \pkg{devtools} \citep{devtools} and \pkg{ProjectTemplate} \citep{projecttemplate} packages have provided for package development and data analysis, respectively. This package attempts to solve the problem where multiple versions of a document are required but the underlying analysis and typesetting code remains static or can be abstracted through the use of variables or properties. For example, many researchers conduct monthly, quarterly, or annual reports where the only difference from version-to-version, from an analysis and typesetting perspective, is the data input. Clearly R and \LaTeX{} are an ideal solution to this problem. The \pkg{makeR} package provides a framework to automate the process of generating new documents from a single source repository.
 
 \begin{figure*}
 \vspace*{.1in}
@@ -52,14 +52,14 @@ The \href{http://www.r-bloggers.com}{R-Bloggers} site provides a wealth of infor
 
 \subsection{Create new project}
 \begin{example}
-myProject = newProject(name="RBloggers", 
+myProject = Project(name="RBloggers", 
   projectDir="~/rbloggers",
   properties=list(email=email, passwd=passwd))
 \end{example}
 
 \subsection{Create initial version}
 \begin{example}
-myProject = newVersion(myProject,
+myProject$newVersion(myProject,
   name='2011-12', 
   properties=list(startDate='2011-12-01', 
   endDate='2011-12-31'))
@@ -67,12 +67,12 @@ myProject = newVersion(myProject,
 
 \subsection{Building the document}
 \begin{example}
-myProject = buildVersion(myProject)
+myProject$build()
 \end{example}
 
 \subsection{Releasing the document}
 \begin{example}
-myProject = releaseVersion(myProject)
+myProject$release()
 \end{example}
 
 \begin{figure}
@@ -124,7 +124,7 @@ style and information on how to prepare your article for submission, see the
 
 \section{Package development}
 
-\texttt{ProjectVersion} is hosted on \href{http://github.com/jbryer/ProjectVersion}{Github}. The latest development version can be installed using the \pkg{devtools} \citep{devtools} package:
+The latest stable version of \pkg{makeR} can be installed from your local CRAN server. Development versions are hosted on \href{http://github.com/jbryer/ProjectVersion}{Github}. The latest development version can be installed using the \pkg{devtools} \citep{devtools} package:
 
 \begin{example}
 install_github('makeR', 'jbryer')
