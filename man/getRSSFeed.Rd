@@ -39,7 +39,7 @@
   Jason Bryer <\email{jason@bryer.org}x>
 }
 \seealso{
-  \code{\link{/xmlRoot}} for the format of the returned XML
+  \code{\link{xmlRoot}} for the format of the returned XML
   tree
 }
 

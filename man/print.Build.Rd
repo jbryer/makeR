@@ -2,9 +2,15 @@
 \alias{print.Build}
 \title{Generic S3 method to print information about a Build class.}
 \usage{
-  print.Build(x, ...)
+  \method{print}{Build} (x, ...)
+}
+\arguments{
+  \item{x}{the Build}
+
+  \item{...}{other non-specified parameters}
 }
 \description{
-  TODO: Need more documentation
+  Generic S3 method to print information about a Build
+  class.
 }
 

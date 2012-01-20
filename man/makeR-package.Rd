@@ -1,6 +1,5 @@
 \docType{package}
 \name{makeR-package}
-\alias{Project}
 \alias{makeR-package}
 \title{Package for managing projects with multiple versions derived from a
        single source repository.}
@@ -19,6 +18,7 @@
 \author{
   \email{jason@bryer.org}
 }
-\keyword{institutional}
-\keyword{research}
+\keyword{Sweave}
+\keyword{templating}
+\keyword{versioning}
 

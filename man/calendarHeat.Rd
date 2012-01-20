@@ -19,6 +19,8 @@
   \item{varname}{varaible names}
 
   \item{date.form}{the format of the Date column}
+
+  \item{...}{other non-specified parameters}
 }
 \description{
   This graphic originally appeared

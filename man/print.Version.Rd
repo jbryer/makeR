@@ -2,9 +2,15 @@
 \alias{print.Version}
 \title{Generic S3 method for printing information about a Version class.}
 \usage{
-  print.Version(x, ...)
+  \method{print}{Version} (x, ...)
+}
+\arguments{
+  \item{x}{the Version}
+
+  \item{...}{other non-specified parameters}
 }
 \description{
-  TODO: Need more documentation
+  Generic S3 method for printing information about a
+  Version class.
 }
 

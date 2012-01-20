@@ -2,9 +2,13 @@
 \alias{print.Project}
 \title{Generic S3 method to print summary information about a Project class.}
 \usage{
-  print.Project(pv)
+  \method{print}{Project} (pv)
+}
+\arguments{
+  \item{pv}{the Project}
 }
 \description{
-  TODO: Need more documentation
+  Generic S3 method to print summary information about a
+  Project class.
 }
 

@@ -1,6 +1,6 @@
 \name{Build}
 \alias{Build}
-\title{Constructor for a Build class.}
+\title{This is an internal method and should not be called directly.}
 \usage{
   Build(buildXML = NULL, buildNum = NULL, major = NULL,
     minor = NULL, name = NULL, timestamp = date(),
@@ -11,8 +11,31 @@
 }
 \arguments{
   \item{buildXML}{an XML element.}
+
+  \item{buildNum}{new build number.}
+
+  \item{major}{major version number}
+
+  \item{minor}{minor version number}
+
+  \item{name}{the name of the version}
+
+  \item{timestamp}{the time the file was built}
+
+  \item{R}{the R version information}
+
+  \item{platform}{the platform the file was built}
+
+  \item{user}{the user that performed the build}
+
+  \item{nodename}{the name of the node on which this file
+  was built}
+
+  \item{file}{the name of the file that was built. This is
+  typicall a PDF.}
 }
 \description{
-  TODO: Need more documentation
+  Constructor for a Build class. This is an interal method
+  used to create a Build class/object.
 }
 
