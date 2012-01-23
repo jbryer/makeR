@@ -42,7 +42,7 @@ myProject$rebuild(builder=builder.tex, sourceFile='rbloggers.tex')
 myProject$Builds ## See that the build completed successfully
 
 ## Release the latest version
-myProject$release()
+myProject$release(version='2011-12')
 
 ## Create the second version. This will be for summarizing Januar 2012 posts.
 myProject$newVersion(name='2012-01', properties=list(
@@ -63,6 +63,9 @@ myProject$getReleases()
 rm(myProject)
 myProject <- Project(projectDir=projectDir)
 myProject
+
+#Rebuild the first version created above
+myProject$build(version='2011-12')
 
 ## Clean-up
 setwd(wd)

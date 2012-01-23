@@ -62,7 +62,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	
 	#Define methods
 	pv$build <- function(version=NULL, saveEnv=TRUE, builder=builder.rnw, ...) { 
-		buildVersion(pv, version=version, saveEnv=saveEnv, builder=builder, ...)
+		buildVersion(pv, version.major=version, saveEnv=saveEnv, builder=builder, ...)
 		if(isAutoSave()) {
 			pv$save()
 		}
@@ -79,7 +79,9 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		invisible(write.Project(pv))
 	}
 	pv$newVersion <- function(name=NA, properties=list()) {
-		if(!is.na(name) & name %in% lapply(pv$Versions, FUN=function(x, ...) { x[['Name']] } )) {
+		if(!is.na(name) & name %in% 
+			unname(unlist(lapply(pv$Versions, FUN=function(x, ...) { x[['Name']] } ))))
+		{
 			stop(paste("Project name must be unique (", name, ")", sep=''))
 		}
 		v = Version(pv, name, properties)
@@ -91,8 +93,12 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		}
 		return(v)
 	}
-	pv$release <- function(major=NULL) { 
-		releaseVersion(pv, major)
+	pv$getVersion <- function(name) {
+		n = unname(unlist(lapply(pv$Versions, FUN=function(x, ...) { x[['Name']] } )))
+		return(pv$Versions[[which(n == name)]])
+	}
+	pv$release <- function(version=NULL) { 
+		releaseVersion(pv, version)
 		if(isAutoSave()) {
 			pv$save()
 		}

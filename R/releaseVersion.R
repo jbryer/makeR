@@ -16,13 +16,9 @@ releaseVersion <- function(pv, major=NULL, increment=TRUE, ...) {
 			version = pv$Versions[[major]]
 			versionPosition = major
 		} else {
-			version = NULL
-			for(i in length(pv$Versions):1) {
-				if(pv$Versions[[i]]$name == major) {
-					version = pv$Versions[[i]]
-					versionPosition = i
-				}
-			}
+			n = unname(unlist(lapply(pv$Versions, FUN=function(x, ...) { x[['Name']] } )))
+			versionPosition = which(n == major)
+			version = pv$Versions[[versionPosition]]
 			if(is.null(version)) {
 				stop(paste("Could not find version ", major, sep=''))
 			}

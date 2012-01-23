@@ -12,16 +12,27 @@
 #' @param ... other non-specified parameters
 buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.rnw, 
 						 clean=TRUE, sourceFile=pv$SourceFile, ...) {
-	#TODO: Use the major and minor versions parameters to rebuild a specific version
 	buildNum = pv$CurrentBuild + 1
-	cv = pv$Versions[[length(pv$Versions)]]
+	cv = NULL
+	if(is.null(version.major)) {
+		cv = pv$Versions[[length(pv$Versions)]]
+	} else {
+		if(is.numeric(version.major)) {
+			cv = pv$Versions[[version.major]]
+		} else {
+			n = unname(unlist(lapply(pv$Versions, FUN=function(x, ...) { x[['Name']] } )))
+			versionPosition = which(n == version.major)
+			cv = pv$Versions[[versionPosition]]
+			if(is.null(cv)) {
+				stop(paste("Could not find version ", version.major, sep=''))
+			}
+		}
+	}
 	majorNum = cv$Major
 	minorNum = cv$Minor
 	name = cv$Name
 	
 	buildEnv <- new.env() 
-	#TODO: Would like to build in a seperate environment, however it appears that
-	#      Sweave will only work with the glovalenv().
 	
 	cat(paste('Building verison ', ifelse(is.null(name), majorNum, name), '.', 
 			  minorNum, '-', buildNum, '...\n', sep=''))
