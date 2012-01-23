@@ -1,3 +1,26 @@
+#' This function will convert the elements in the given environment to a single
+#' character string. This is useful when passing the contents of the environment
+#' to a new R instances vis-a-vis the command line.
+#'
+#' @param theenv the environment to convert to a string.
+#' @return the string representation of the environment.
+#' @export
+env2string <- function(theenv) {
+	st <- character()
+	for(i in 1:length(ls(theenv))) {
+		varName <- ls(theenv)[i]
+		varValue <- get(varName, theenv)
+		if(class(varValue) == 'character') {
+			varValue <- paste("'", varValue, "'", sep='')
+		} else if(class(varValue) == 'function') {
+			varValue <- paste(deparse(varValue), collapse='')
+		}
+		st = paste(st, varName, '=', varValue, '; ', sep='')
+	}
+	return(st)
+}
+
+
 #' This is an internal method and should not be called directly.
 #'
 #' Builds a new version of a project. See Project$build
@@ -8,6 +31,7 @@
 #' @param saveEnv whether to save build environment as an Rda image file.
 #' @param builder the builder function to use.
 #' @param clean if TRUE the source files will be (re)copied to the buld directory.
+#' @param sourceFile the name of the source file to build.
 #' @param ... other non-specified parameters
 buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.rnw, 
 						 clean=TRUE, sourceFile=pv$SourceFile, ...) {
@@ -18,7 +42,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	minorNum = cv$Minor
 	name = cv$Name
 	
-	buildEnv <- globalenv() 
+	buildEnv <- new.env() 
 	#TODO: Would like to build in a seperate environment, however it appears that
 	#      Sweave will only work with the glovalenv().
 	
@@ -74,7 +98,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	fileBuilt = NULL
 	try( {
 		for(i in 1:length(rnw)) {
-			fileBuilt = builder(rnw[i], ...)
+			fileBuilt = builder(rnw[i], buildEnv, ...)
 		}
 		success = TRUE
 	})

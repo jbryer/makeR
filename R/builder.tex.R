@@ -2,10 +2,11 @@
 #' first run Stangle, then Sweave, and finally texti2pdf.
 #'
 #' @param file the source file to build.
+#' @param theenv the environment to build in.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.tex <- function(file, ...) {
+builder.tex <- function(file, theenv, ...) {
 	cat('Running texi2dvi...\n')
 	texi2pdf(file)
 	return(paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))

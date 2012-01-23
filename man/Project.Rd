@@ -32,4 +32,18 @@
 \description{
   TODO: More documentation
 }
+\details{
+  Methods: \tabular{ll}{ build \tab Builds the project.\cr
+  rebuild \tab Rebuilds the project without first copying
+  the files.\cr save \tab Saves the PROJECT.xml file.\cr
+  newVersion \tab Creates a new versions of the project.\cr
+  release \tab Releases a version (i.e. copies the built
+  file to the releases directory)\cr getProperties \tab
+  Returns the project properties.\cr addProperty \tab Adds
+  a project property.\cr removeProperty \tab Removes the
+  given project property.\cr getReleases \tab Returns a
+  list of released files.\cr openRelease \tab Opens the
+  given released file with the system's default
+  application.\cr }
+}
 

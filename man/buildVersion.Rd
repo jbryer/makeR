@@ -3,7 +3,8 @@
 \title{This is an internal method and should not be called directly.}
 \usage{
   buildVersion(pv, version.major = NULL, saveEnv = TRUE,
-    builder = builder.rnw, clean = TRUE, ...)
+    builder = builder.rnw, clean = TRUE,
+    sourceFile = pv$SourceFile, ...)
 }
 \arguments{
   \item{pv}{the Project}
@@ -18,6 +19,8 @@
 
   \item{clean}{if TRUE the source files will be (re)copied
   to the buld directory.}
+
+  \item{sourceFile}{the name of the source file to build.}
 
   \item{...}{other non-specified parameters}
 }
