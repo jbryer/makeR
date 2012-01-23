@@ -47,7 +47,7 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 			Name = name,
 			Properties = properties
 		)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}		
 	}
@@ -61,7 +61,7 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 		p[[name]] <- value 
 		assign('Properties', p, envir=version)
 		assign('Versions', pv$Versions, envir=version$pv)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
@@ -71,7 +71,7 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 		p[[name]] <<- NULL
 		assign('Properties', p, envir=version)
 		assign('Versions', pv$Versions, envir=version$pv)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()

@@ -10,10 +10,14 @@
 #'        for new projects.
 #' @param releaseDir the directory where released versions will be located. Only 
 #'        used for new projects.
+#' @param sourceFile the source file to be built. This can be a file pattern so
+#'        that multiple files of the same type can be built.
 #' @param properties list of global properties for the project.
 #' @export
 Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
-					buildDir="build", releaseDir="release", properties=list()) {
+					buildDir="build", releaseDir="release", 
+					sourceFile=".rnw",
+					properties=list()) {
 	pv <- NULL
 	if(file.exists(paste(projectDir, "/PROJECT.xml", sep=''))) {
 		pv = parseProjectXML(projectDir=projectDir)
@@ -30,6 +34,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 			SourceDir = sourceDir,
 			ReleaseDir = releaseDir,
 			Properties = properties,
+			SourceFile = sourceFile,
 			Versions = list(),
 			Builds = list()
 		)
@@ -42,9 +47,16 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	pv$File.Info <- NULL
 	
 	#Define methods
-	pv$build <- function(version=NULL) { 
-		buildVersion(pv, version) 
-		if(`_AUTOSAVE`) {
+	pv$build <- function(version=NULL, saveEnv=TRUE, builder=builder.rnw, ...) { 
+		buildVersion(pv, version=version, saveEnv=saveEnv, builder=builder, ...)
+		if(isAutoSave()) {
+			pv$save()
+		}
+		invisible()
+	}
+	pv$rebuild <- function(version=NULL, saveEnv=TRUE, bulder=builder.rnw, ...) {
+		buildVersion(pv, version=version, saveEnv=saveEnv, bulder=builder, clean=FALSE, ...)
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
@@ -57,14 +69,14 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		versions <- pv$Versions
 		versions[[as.character(v$Major)]] <- v
 		assign("Versions", versions, envir=pv)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		return(v)
 	}
 	pv$release <- function(major=NULL) { 
 		releaseVersion(pv, major)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
@@ -76,7 +88,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		p <- pv$Properties
 		p[[name]] <- value 
 		assign('Properties', p, envir=pv)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
@@ -85,7 +97,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		p <- pv$Properties
 		p[[name]] <<- NULL
 		assign('Properties', p, envir=pv)
-		if(`_AUTOSAVE`) {
+		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
@@ -100,7 +112,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	pv <- list2env(pv)
 	class(pv) <- "Project"
 	
-	if(`_AUTOSAVE`) {
+	if(isAutoSave()) {
 		pv$save()
 	}
 	
@@ -181,6 +193,10 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 	}
 	pv$CurrentBuild = length(pv$Builds)
 	
+	pv$SourceFile = NULL
+	if('sourceFile' %in% names(xmlAttrs(root))) {
+		pv$SourceFile = xmlAttrs(root)[['sourceFile']]
+	}
 	pv$ProjectName = ''
 	if('name' %in% names(xmlAttrs(root))) {
 		pv$ProjectName = xmlAttrs(root)[['name']]

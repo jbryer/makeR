@@ -7,7 +7,8 @@ write.Project <- function(pv) {
 	root = xmlNode("project", attrs=c(name=pv$ProjectName, 
 									  buildDir=pv$BuildDir,
 									  releaseDir=pv$ReleaseDir,
-									  sourceDir=pv$SourceDir))
+									  sourceDir=pv$SourceDir,
+									  sourceFile=pv$SourceFile))
 	if(length(pv$Properties) > 0) {
 		for(i in 1:length(pv$Properties)) {
 			property = xmlNode('property', attrs=c(name=names(pv$Properties[i]),

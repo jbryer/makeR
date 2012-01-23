@@ -66,7 +66,7 @@ releaseVersion <- function(pv, major=NULL, increment=TRUE, ...) {
 		assign("Versions", versions, envir=pv)
 	}
 	
-	if(`_AUTOOPEN`) {
+	if(isAutoOpen()) {
 		try(system(paste("open \"", toFile, "\"", sep='')))
 	}
 	if(!is.null(wd)) setwd(wd)

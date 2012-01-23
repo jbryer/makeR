@@ -5,8 +5,12 @@
 #' @param pv the Project
 #' @param version.major the version that should be built. This can be either the
 #'        the major number or version name.
+#' @param saveEnv whether to save build environment as an Rda image file.
+#' @param builder the builder function to use.
+#' @param clean if TRUE the source files will be (re)copied to the buld directory.
 #' @param ... other non-specified parameters
-buildVersion <- function(pv, version.major=NULL, ...) {
+buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.rnw, 
+						 clean=TRUE, sourceFile=pv$SourceFile, ...) {
 	#TODO: Use the major and minor versions parameters to rebuild a specific version
 	buildNum = pv$CurrentBuild + 1
 	cv = pv$Versions[[length(pv$Versions)]]
@@ -46,16 +50,18 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 	}
 	dir.create(buildDir, recursive=TRUE, showWarnings=FALSE)
 	
-	cat('Copying source files...\n')
-	file.copy(
-		paste(pv$ProjectDir, '/', pv$SourceDir, '/', 
-			  list.files(paste(pv$ProjectDir, '/', pv$SourceDir, '/', sep='')), sep=''),
-		to=buildDir, overwrite=TRUE, recursive=TRUE)
+	if(clean) {
+		cat('Copying source files...\n')
+		file.copy(
+			paste(pv$ProjectDir, '/', pv$SourceDir, '/', 
+				  list.files(paste(pv$ProjectDir, '/', pv$SourceDir, '/', sep='')), sep=''),
+			to=buildDir, overwrite=TRUE, recursive=TRUE)
+	}
 	
 	wd = eval(setwd(buildDir), envir=buildEnv)
 	
 	cat(paste('Bulding version ', majorNum, '.', minorNum, '-', buildNum, '\n', sep=''))
-	rnw = list.files(buildDir, pattern=".rnw", ignore.case=TRUE)
+	rnw = list.files(buildDir, pattern=sourceFile, ignore.case=TRUE)
 	if(is.na(name)) {
 		eval(sink(paste('build.', majorNum, '.', minorNum, '-', buildNum, '.log', sep=''), 
 			 append=TRUE, split=FALSE), envir=buildEnv)
@@ -65,20 +71,22 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 	}
 
 	success = FALSE
+	fileBuilt = NULL
 	try( {
 		for(i in 1:length(rnw)) {
-			cat('Running Stangle...\n')
-			Stangle(rnw[i])
-			cat('Running Sweave...\n')
-			Sweave(rnw[i], debug=TRUE)
-			cat('Running texi2dvi...\n')
-			texi2pdf(paste(substr(rnw[i], 1, (nchar(rnw[i])-4)), '.tex', sep=''))
-			success = TRUE
+			fileBuilt = builder(rnw[i], ...)
 		}
+		success = TRUE
 	})
 	
 	sink()
-	save(buildEnv, file=paste('build.', majorNum, '.', minorNum, '-', buildNum, '.Rda', sep=''))
+	
+	if(saveEnv) {
+		rdafile = paste('build.', majorNum, '.', minorNum, '-', buildNum, '.Rda', sep='')
+		cat(paste("Saving build environment to ", rdafile, sep=''))
+		save(buildEnv, file=rdafile)
+	}
+	
 	eval(setwd(wd), envir=buildEnv)
 	
 	#Add a build entry
@@ -88,14 +96,14 @@ buildVersion <- function(pv, version.major=NULL, ...) {
 			minor=minorNum,
 			buildNum=buildNum,
 			name = name,
-			file=paste(substr(rnw[1], 1, (nchar(rnw[1])-4)), '.pdf', sep=''))
+			#TODO: support multiple files in the Build class
+			file=fileBuilt)
 		builds = pv$Builds
 		builds[[as.character(length(pv$Builds) + 1)]] = b
 		assign("Builds", builds, envir=pv)
 		
-		if(`_AUTOOPEN`) {
-			try(system(paste("open \"", buildDir, "/",
-					substr(rnw[1], 1, (nchar(rnw[i])-4)), '.pdf', "\"", sep='')))
+		if(isAutoOpen()) {
+			try(system(paste("open \"", buildDir, "/",	fileBuilt, "\"", sep="")))
 		}
 		
 		invisible(b)
