@@ -7,11 +7,6 @@ pause <- function(){
 email = readline("\nEnter your Google Reader email address: ")
 passwd = invisible(readline("\nEnter your Google Reader password: "))
 
-require(makeR)
-require(wordcloud)
-require(XML)
-require(RCurl)
-
 ## Setup the project directory
 wd = setwd(system.file(package='makeR'))
 projectDir = paste(getwd(), '/demo/rbloggersDemo', sep='')
