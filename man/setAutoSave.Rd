@@ -1,6 +1,6 @@
 \name{setAutoSave}
 \alias{setAutoSave}
-\title{Sets whether the PROJECT.xml files is automatically saved when project properties
+\title{Sets whether the PROJECT.xml file is automatically saved when project properties
 have changed.}
 \usage{
   setAutoSave(value)
@@ -10,7 +10,7 @@ have changed.}
   automitcally.}
 }
 \description{
-  Sets whether the PROJECT.xml files is automatically saved
+  Sets whether the PROJECT.xml file is automatically saved
   when project properties have changed.
 }
 \seealso{

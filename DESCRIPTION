@@ -28,3 +28,5 @@ Collate:
     'GoogleReader.R'
     'calendarHeat.R'
     'writeProject.R'
+    'builder.rnw.R'
+    'builder.tex.R'
