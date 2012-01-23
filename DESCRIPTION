@@ -30,3 +30,4 @@ Collate:
     'writeProject.R'
     'builder.rnw.R'
     'builder.tex.R'
+    'env2string.R'
