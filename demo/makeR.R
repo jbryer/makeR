@@ -43,6 +43,7 @@ myProject$Versions[[1]]$addProperty("test", "value")
 
 ## Build the initial version.
 myProject$build()
+myProject$rebuild(builder=builder.tex, sourceFile='rbloggers.tex')
 myProject$Builds ## See that the build completed successfully
 
 ## Release the latest version
