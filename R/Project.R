@@ -8,7 +8,15 @@
 #' is identical, with perhaps the exception of easily extracted properties 
 #' (e.g. date ranges for data extraction, title, etc.).
 #' 
-#'  
+#' Most interaction with the \code{makeR} package will occur through the \code{Project}
+#' class. \code{Project} is an S3 class that defines some generic functions
+#' (e.g. print). The \code{Project} class contains a number of properties and
+#' methods. By convention, properties begin with a capital case letter and methods
+#' begin with a lower case letter. Each is accessedd using the dollar sign
+#' notation (e.g. \code{myproject$build()}). See below for details for each
+#' property and method.
+#' 
+#' See \code{demo('rbloggers')} for an interactive example.
 #'
 #' Properties:
 #' \itemize{
@@ -72,7 +80,7 @@
 #' @param properties list of global properties for the project.
 #' @export
 #' @examples
-#' ## Not run:
+#' \dontrun{
 #' myProject = Project(name="RBloggers", projectDir=projectDir, properties=list(email=email, passwd=passwd))
 #' myProject$save()
 #' ## Create the first version. This will be for summarizing December 2011 posts.
@@ -85,7 +93,7 @@
 #' myProject$Builds ## See that the build completed successfully 
 #' ## Release the latest version
 #' myProject$release(version='2011-12')
-#' ## End(Not run)
+#' }
 Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 					buildDir="build", releaseDir="release", 
 					sourceFile=".rnw",
@@ -306,11 +314,12 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 
 #' Generic S3 method to print summary information about a Project class.
 #'
-#' @param pv the Project
+#' @param x the Project
+#' @param ... other unspecified parameters.
 #' @method print Project
 #' @S3method print Project
 #' @export
-print.Project <- function(pv) {
+print.Project <- function(x, ...) {
 	cat(paste('Project Directory: ', pv$ProjectDir, '\n',
 			  'Source Directory: ', pv$SourceDir, '\n',
 			  'Build Directory: ', pv$BuildDir, '\n',

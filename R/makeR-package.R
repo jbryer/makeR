@@ -22,10 +22,10 @@ AUTOOPEN <- TRUE
 
 .onAttach <- function(libname, pkgname) {
 	pkgEnv = pos.to.env(match('package:makeR', search()))
-	cat(paste("Auto saving of PROJECT.xml is ", 
+	packageStartupMessage(paste("Auto saving of PROJECT.xml is ", 
 			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
 			  ". This can be changed using the setAutoSave() function.\n", sep=''))
-	cat(paste("Auto opening of built and released files is ", 
+	packageStartupMessage(paste("Auto opening of built and released files is ", 
 			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
 			  ". This can be changed using the setAutoOpen() function.\n", sep=''))
 }

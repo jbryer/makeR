@@ -52,7 +52,17 @@
   ranges for data extraction, title, etc.).
 }
 \details{
+  Most interaction with the \code{makeR} package will occur
+  through the \code{Project} class. \code{Project} is an S3
+  class that defines some generic functions (e.g. print).
+  The \code{Project} class contains a number of properties
+  and methods. By convention, properties begin with a
+  capital case letter and methods begin with a lower case
+  letter. Each is accessedd using the dollar sign notation
+  (e.g. \code{myproject$build()}). See below for details
+  for each property and method.
 
+  See \code{demo('rbloggers')} for an interactive example.
 
   Properties: \itemize{ \item \code{BuildDir} - the
   directory where builds will occurr.  \item \code{Builds}
@@ -100,7 +110,7 @@
   The released file to open. }
 }
 \examples{
-## Not run:
+\dontrun{
 myProject = Project(name="RBloggers", projectDir=projectDir, properties=list(email=email, passwd=passwd))
 myProject$save()
 ## Create the first version. This will be for summarizing December 2011 posts.
@@ -113,6 +123,6 @@ myProject$rebuild(builder=builder.tex, sourceFile='rbloggers.tex')
 myProject$Builds ## See that the build completed successfully
 ## Release the latest version
 myProject$release(version='2011-12')
-## End(Not run)
+}
 }
 
