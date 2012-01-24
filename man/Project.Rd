@@ -1,6 +1,16 @@
 \name{Project}
 \alias{Project}
-\title{Creates a new empty project.}
+\alias{addProperty}
+\alias{build}
+\alias{getProperties}
+\alias{getReleases}
+\alias{newVersion}
+\alias{openRelease}
+\alias{rebuild}
+\alias{release}
+\alias{removeProperty}
+\alias{save}
+\title{An R package for managing document versions and templates.}
 \usage{
   Project(projectDir = getwd(), name = NULL,
     sourceDir = "source", buildDir = "build",
@@ -30,20 +40,79 @@
   project.}
 }
 \description{
-  TODO: More documentation
+  The idea of build automation is not new. GNU Make and
+  Java Ant are well established and robust build automation
+  systems but require the use and installation of
+  additional software. The makeR package provides a sim-
+  plified framework written entirely in R to manage Sweave
+  projects where multiple versions are created based upon a
+  single source repository. For example, a monthly report
+  where each version is identical, with perhaps the
+  exception of easily extracted properties (e.g. date
+  ranges for data extraction, title, etc.).
 }
 \details{
-  Methods: \tabular{ll}{ build \tab Builds the project.\cr
-  rebuild \tab Rebuilds the project without first copying
-  the files.\cr save \tab Saves the PROJECT.xml file.\cr
-  newVersion \tab Creates a new versions of the project.\cr
-  release \tab Releases a version (i.e. copies the built
-  file to the releases directory)\cr getProperties \tab
-  Returns the project properties.\cr addProperty \tab Adds
-  a project property.\cr removeProperty \tab Removes the
-  given project property.\cr getReleases \tab Returns a
-  list of released files.\cr openRelease \tab Opens the
-  given released file with the system's default
-  application.\cr }
+
+
+  Properties: \itemize{ \item \code{BuildDir} - the
+  directory where builds will occurr.  \item \code{Builds}
+  - list of completed builds.  \item \code{CurrentBuild} -
+  an integer of the last build.  \item \code{ProjectDir} -
+  the base directory where the project is located.  \item
+  \code{ProjectFile} - the name of the source file to be
+  built.  \item \code{ProjectName} - the name of the
+  project.  \item \code{Properties} - a list of the project
+  properties. See also \code{p$getProperties()}.  \item
+  \code{ReleaseDir} - the directory where released files
+  will be located.  \item \code{SourceDir} - the directory
+  containing the source files.  \item \code{Versions} - a
+  list of the project versions.  \item \code{file.info} -
+  the file info from the last time the PROJECT.xml file was
+  read. }
+
+  Methods: \itemize{ \item \code{build} Builds the
+  project.\\\\ \code{version} - (optional) the version to
+  build.\\\\ \code{saveEnv} - if TRUE, the build
+  environment (.rda) will be saved in the build
+  directory.\\\\ \code{builder} - the builder function.
+  \item \code{rebuild} Rebuilds the project without first
+  copying the files.\\\\ \code{version} - (optional) the
+  version to rebuild.\\\\ \code{saveEnv} - if TRUE, the
+  build environment (.rda) will be saved in the build
+  directory.\\\\ \code{builder} - the bulder function.
+  \item \code{save} Saves the PROJECT.xml file.  \item
+  \code{newVersion} Creates a new versions of the
+  project.\\\\ \code{name} - (optional) the version
+  name.\\\\ \code{properties} - version specific
+  properties.  \item \code{release} Releases a version
+  (i.e. copies the built file to the releases
+  directory)\\\\ \code{version} - (optional) the version to
+  release. If ommitted the latest version will be released.
+  \item \code{getProperties} Returns the project
+  properties.  \item \code{addProperty} Adds a project
+  property.\\\\ \code{name} - The property name.\\\\
+  \code{value} - The property value.  \item
+  \code{removeProperty} Removes the given project
+  property.\\\\ \code{name} - The property name.  \item
+  \code{getReleases} Returns a list of released files.
+  \item \code{openRelease} Opens the given released file
+  with the system's default application.\\\\ \code{file} -
+  The released file to open. }
+}
+\examples{
+## Not run:
+myProject = Project(name="RBloggers", projectDir=projectDir, properties=list(email=email, passwd=passwd))
+myProject$save()
+## Create the first version. This will be for summarizing December 2011 posts.
+myProject$newVersion(name='2011-12', properties=list(startDate='2011-12-01', endDate='2011-12-31'))
+## Add Project property
+myProject$addProperty("author", "Jason Bryer")
+## Build the initial version.
+myProject$build()
+myProject$rebuild(builder=builder.tex, sourceFile='rbloggers.tex')
+myProject$Builds ## See that the build completed successfully
+## Release the latest version
+myProject$release(version='2011-12')
+## End(Not run)
 }
 
