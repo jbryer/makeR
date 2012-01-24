@@ -86,6 +86,61 @@ myProject$release()
 Output from the R-Bloggers example.}%
 \end{figure}
 
+\subsection{Project attributes}
+\begin{itemize}
+	\item \code{BuildDir} - the directory where builds will occurr.
+	\item \code{Builds} - list of completed builds.
+	\item \code{CurrentBuild} - an integer of the last build.
+	\item \code{ProjectDir} - the base directory where the project is located.
+	\item \code{ProjectFile} - the name of the source file to be built.
+	\item \code{ProjectName} - the name of the project.
+	\item \code{Properties} - a list of the project properties. See also \code{getProperties()}.
+	\item \code{ReleaseDir} - the directory where released files will be located.
+	\item \code{SourceDir} - the directory containing the source files.
+	\item \code{Versions} - a list of the project versions.
+	\item \code{file.info} - the file info from the last time the \file{PROJECT.xml} file was read.
+\end{itemize}
+
+\subsection{Project methods}
+\begin{itemize}
+	\item \code{build} Builds the project.
+		\begin{itemize}
+		\item \code{version} - (optional) the version to build.
+		\item \code{saveEnv} - if TRUE, the build environment (.rda) will be saved in the build directory.
+		\item \code{builder} - the builder function.
+		\end{itemize}
+	\item \code{rebuild} Rebuilds the project without first copying the files.
+		\begin{itemize}
+		\item \code{version} - (optional) the version to rebuild.
+		\item \code{saveEnv} - if TRUE, the build environment (.rda) will be saved in the build directory.
+		\item \code{builder} - the bulder function.
+		\end{itemize}
+	\item \code{save} Saves the PROJECT.xml file.
+	\item \code{newVersion} Creates a new versions of the project.
+		\begin{itemize}
+		\item \code{name} - (optional) the version name.
+		\item \code{properties} - version specific properties.
+		\end{itemize}
+	\item \code{release} Releases a version (i.e. copies the built file to the releases directory)
+		\begin{itemize}
+		\item \code{version} - (optional) the version to release. If omitted the latest version will be released.
+		\end{itemize}
+	\item \code{getProperties} Returns the project properties.
+	\item \code{addProperty} Adds a project property.
+		\begin{itemize}
+		\item \code{name} - The property name.
+		\item \code{value} - The property value.
+		\end{itemize}
+	\item \code{removeProperty} Removes the given project property.
+		\begin{itemize}
+		\item \code{name} - The property name.
+		\end{itemize}
+	\item \code{getReleases} Returns a list of released files.
+	\item \code{openRelease} Opens the given released file with the system's default application.
+		\begin{itemize}
+		\item \code{file} - The released file to open.
+		\end{itemize}
+\end{itemize}
 
 \section{The project file format}
 \label{section:fileformat}
@@ -119,7 +174,23 @@ The \file{PROJECT.xml} file defines the properties, versions, and builds of a pa
 \file{PROJECT.xml} for the R-Bloggers demo project.}
 \end{figure*}
 
-\section{Summary}
+\section{Custom builders}
+
+\begin{example}
+builder.rnw <- function(file, theenv, ...) \{
+  Stangle(file)
+  envstr = env2string(theenv)
+  thecall = paste('Rscript -e "', envstr,
+      ' Sweave(\'', file, '\')"', sep='')
+  system(thecall)
+  texi2pdf(paste(substr(file, 1,
+      (nchar(file)-4)), '.tex', sep=''))
+  return(paste(substr(file, 1,
+      (nchar(file)-4)), '.pdf', sep=''))
+\}
+\end{example}
+
+%\section{Summary}
 
 
 \section{Package development}
