@@ -17,14 +17,16 @@ NULL
 .onLoad <- function(libname, pkgname) {
 }
 
+AUTOSAVE <- TRUE
+AUTOOPEN <- TRUE
+
 .onAttach <- function(libname, pkgname) {
-	eval(`_makeR.AUTOSAVE` <<- TRUE, globalenv())
-	eval(`_makeR.AUTOOPEN` <<- TRUE, globalenv())
+	pkgEnv = pos.to.env(match('package:makeR', search()))
 	cat(paste("Auto saving of PROJECT.xml is ", 
-			  ifelse(eval(`_makeR.AUTOSAVE`, globalenv()), "enabled", "disabled"),
+			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
 			  ". This can be changed using the setAutoSave() function.\n", sep=''))
 	cat(paste("Auto opening of built and released files is ", 
-			  ifelse(eval(`_makeR.AUTOOPEN`, globalenv()), "enabled", "disabled"),
+			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
 			  ". This can be changed using the setAutoOpen() function.\n", sep=''))
 }
 
@@ -35,7 +37,7 @@ NULL
 #' @param value if TRUE PROJECT.xml will be saved automitcally.
 #' @export
 setAutoSave <- function(value) {
-	eval(`_makeR.AUTOSAVE` <<- value, globalenv())
+	assignInNamespace("AUTOSAVE", value, "makeR")
 }
 
 #' Returns whether the PROJECT.xml file is automatically saved.
@@ -43,7 +45,7 @@ setAutoSave <- function(value) {
 #' @seealso \code{\link{setAutoSave}}
 #' @export
 isAutoSave <- function() {
-	return(eval(`_makeR.AUTOSAVE`, globalenv()))
+	return(makeR:::AUTOSAVE)
 }
 
 #' Sets whether built or released files will be opened automatically using the
@@ -52,13 +54,12 @@ isAutoSave <- function() {
 #' @param value if TRUE PDF files will be opened automatically.
 #' @export
 setAutoOpen <- function(value) {
-	eval(`_makeR.AUTOOPEN` <<- value, globalenv())
-}
+	assignInNamespace("AUTOOPEN", value, "makeR")}
 
 #' Returns whether build or released files will be opened automaticall.
 #'
 #' @seealso \code{\link{setAutoOpen}}
 #' @export
 isAutoOpen <- function() {
-	return(eval(`_makeR.AUTOOPEN`, globalenv()))
+	return(makeR:::AUTOOPEN)
 }
