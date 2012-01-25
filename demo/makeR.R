@@ -38,10 +38,14 @@ myProject$Versions[[1]]$addProperty("test", "value")
 
 ## Build the initial version.
 myProject$build()
+## Rebuild only the tex file without copying the files over.
 myProject$rebuild(builder=builder.tex, sourceFile='rbloggers.tex')
 myProject$Builds ## See that the build completed successfully
 
-## Release the latest version
+## Alternatively we can use the cacheSweave builder.
+myProject$build(builder=builder.cacheSweave)
+
+## Release the latest version. The version parameter is optional.
 myProject$release(version='2011-12')
 
 ## Create the second version. This will be for summarizing Januar 2012 posts.

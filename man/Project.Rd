@@ -80,34 +80,36 @@
   the file info from the last time the PROJECT.xml file was
   read. }
 
-  Methods: \itemize{ \item \code{build} Builds the
-  project.\\\\ \code{version} - (optional) the version to
-  build.\\\\ \code{saveEnv} - if TRUE, the build
-  environment (.rda) will be saved in the build
-  directory.\\\\ \code{builder} - the builder function.
-  \item \code{rebuild} Rebuilds the project without first
-  copying the files.\\\\ \code{version} - (optional) the
-  version to rebuild.\\\\ \code{saveEnv} - if TRUE, the
-  build environment (.rda) will be saved in the build
-  directory.\\\\ \code{builder} - the bulder function.
-  \item \code{save} Saves the PROJECT.xml file.  \item
-  \code{newVersion} Creates a new versions of the
-  project.\\\\ \code{name} - (optional) the version
-  name.\\\\ \code{properties} - version specific
+  Methods: \itemize{ \item \code{build} Builds the project.
+  \code{version} - (optional) the version to build.
+  \code{saveEnv} - if TRUE, the build environment (.rda)
+  will be saved in the build directory.  \code{builder} -
+  the builder function. See also \code{\link{builder.rnw}},
+  \code{\link{builder.cacheSweave}},
+  \code{\link{builder.tex}} \item \code{rebuild} Rebuilds
+  the project without first copying the files.
+  \code{version} - (optional) the version to rebuild.
+  \code{saveEnv} - if TRUE, the build environment (.rda)
+  will be saved in the build directory.  \code{builder} -
+  the bulder function.See also \code{\link{builder.rnw}},
+  \code{\link{builder.cacheSweave}},
+  \code{\link{builder.tex}} \item \code{save} Saves the
+  PROJECT.xml file.  \item \code{newVersion} Creates a new
+  versions of the project.  \code{name} - (optional) the
+  version name.  \code{properties} - version specific
   properties.  \item \code{release} Releases a version
-  (i.e. copies the built file to the releases
-  directory)\\\\ \code{version} - (optional) the version to
-  release. If ommitted the latest version will be released.
-  \item \code{getProperties} Returns the project
-  properties.  \item \code{addProperty} Adds a project
-  property.\\\\ \code{name} - The property name.\\\\
-  \code{value} - The property value.  \item
-  \code{removeProperty} Removes the given project
-  property.\\\\ \code{name} - The property name.  \item
-  \code{getReleases} Returns a list of released files.
-  \item \code{openRelease} Opens the given released file
-  with the system's default application.\\\\ \code{file} -
-  The released file to open. }
+  (i.e. copies the built file to the releases directory)
+  \code{version} - (optional) the version to release. If
+  ommitted the latest version will be released.  \item
+  \code{getProperties} Returns the project properties.
+  \item \code{addProperty} Adds a project property.
+  \code{name} - The property name.  \code{value} - The
+  property value.  \item \code{removeProperty} Removes the
+  given project property.  \code{name} - The property name.
+  \item \code{getReleases} Returns a list of released
+  files.  \item \code{openRelease} Opens the given released
+  file with the system's default application.  \code{file}
+  - The released file to open. }
 }
 \examples{
 \dontrun{

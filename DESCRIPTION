@@ -31,3 +31,4 @@ Collate:
     'builder.rnw.R'
     'builder.tex.R'
     'env2string.R'
+    'builder.cacheSweave.R'
