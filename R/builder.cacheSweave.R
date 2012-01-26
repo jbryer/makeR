@@ -1,13 +1,13 @@
 #' This function will build Sweave (Rnw) files using the cacheSweave driver.
 #'
-#' @param file the source file to build.
+#' @param project the project to be built.
 #' @param theenv the environment to build in.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.cacheSweave <- function(sourceFile, theenv, ...) {
+builder.cacheSweave <- function(project, theenv, ...) {
 	require(cacheSweave)
-	if(is.null(sourceFile)) { sourceFile = ".rnw" }
+	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
 	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
 	built = character()

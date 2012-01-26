@@ -84,7 +84,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	success = FALSE
 	filesBuilt = NULL
 	try( {
-		filesBuilt = builder(sourceFile, buildEnv, ...)
+		filesBuilt = builder(pv, buildEnv, ...)
 		success = TRUE
 	})
 	

@@ -7,8 +7,8 @@ file.copy(paste(getwd(), '/stocks/stocks.R', sep=''),
 		  paste(projectDir, '/source/stocks.R', sep=''))
 
 ## Define the custom builder
-builder.png <- function(sourceFile, theenv, ...) {
-	if(is.null(sourceFile)) { sourceFile = ".r$" }
+builder.png <- function(project, theenv, ...) {
+	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
 	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
 	for(i in seq_len(length(files))) {

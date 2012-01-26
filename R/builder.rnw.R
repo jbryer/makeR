@@ -1,13 +1,13 @@
 #' This function will build Sweave (Rnw) files. Specifically this function will
 #' first run Stangle, then Sweave, and finally texti2pdf.
 #'
-#' @param sourceFile the source file to build. This may be NULL.
+#' @param project the project to be built.
 #' @param theenv the environment to build in.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.rnw <- function(sourceFile, theenv, ...) {
-	if(is.null(sourceFile)) { sourceFile = ".rnw" }
+builder.rnw <- function(project, theenv, ...) {
+	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
 	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
 	built = character()
