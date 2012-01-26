@@ -1,13 +1,20 @@
-#' This function will build Sweave (Rnw) files. Specifically this function will
-#' first run Stangle, then Sweave, and finally texti2pdf.
+#' This function will build LaTeX (tex) files using texti2pdf.
 #'
-#' @param file the source file to build.
+#' @param sourceFile the source file to build.
 #' @param theenv the environment to build in.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.tex <- function(file, theenv, ...) {
+builder.tex <- function(sourceFile, theenv, ...) {
+	if(is.null(sourceFile)) { sourceFile = ".tex" }
+	wd = eval(getwd(), envir=theenv)
+	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
+	built = character()
 	cat('Running texi2dvi...\n')
-	texi2pdf(file)
-	return(paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))
+	for(i in seq_len(length(files))) {
+		file = files[i]
+		texi2pdf(file)
+		built = c(built, paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))
+	}
+	return(built)
 }

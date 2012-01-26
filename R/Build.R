@@ -13,7 +13,7 @@
 #' @param platform the platform the file was built
 #' @param user the user that performed the build
 #' @param nodename the name of the node on which this file was built
-#' @param file the name of the file that was built. This is typicall a PDF.
+#' @param files the name of the files that were built. This is typically a list of PDFs.
 Build <- function(buildXML=NULL, 
 				  buildNum=NULL, major=NULL, minor=NULL, name=NULL, 
 				  timestamp=date(), 
@@ -21,7 +21,7 @@ Build <- function(buildXML=NULL,
 				  platform=R.version$platform,
 				  user=Sys.info()['user'],
 				  nodename=Sys.info()['nodename'],
-				  file=NULL) {
+				  files=NULL) {
 	build = list()
 	if(!is.null(buildXML)) {
 		build$Build = xmlAttrs(buildXML)[['build']]
@@ -41,7 +41,11 @@ Build <- function(buildXML=NULL,
 		build$Platform = xmlAttrs(buildXML)[['platform']]
 		build$User = xmlAttrs(buildXML)[['user']]
 		build$Nodename = xmlAttrs(buildXML)[['nodename']]
-		build$File = xmlAttrs(buildXML)[['file']] #TODO: Support multiple files
+		build$Files = character()
+		files = which(xmlSApply(buildXML, xmlName) == 'file')
+		for(i in files) {
+			build$Files = c(build$Files, xmlValue(buildXML[[i]]))
+		}
 	} else {
 		build$Build = buildNum
 		build$Major = major
@@ -52,7 +56,7 @@ Build <- function(buildXML=NULL,
 		build$Platform = platform
 		build$User = user
 		build$Nodename = nodename
-		build$File = file #TODO: Support multiple files		
+		build$Files = files
 	}
 	class(build) = 'Build'
 	return(build)
@@ -69,6 +73,6 @@ print.Build <- function(x, ...) {
 	cat(paste(
 		'Build ', x$Build, ' for version ', x$Major, '.', x$Minor, ' (', x$Name, ')\n',
 		'   Built on ', x$Timestamp, ' using ', x$R, '\n',
-		'   File built: ', x$File,
+		'   Files built: ', x$Files,
 		sep=''))
 }

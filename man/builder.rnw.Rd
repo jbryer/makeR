@@ -3,10 +3,11 @@
 \title{This function will build Sweave (Rnw) files. Specifically this function will
 first run Stangle, then Sweave, and finally texti2pdf.}
 \usage{
-  builder.rnw(file, theenv, ...)
+  builder.rnw(sourceFile, theenv, ...)
 }
 \arguments{
-  \item{file}{the source file to build.}
+  \item{sourceFile}{the source file to build. This may be
+  NULL.}
 
   \item{theenv}{the environment to build in.}
 

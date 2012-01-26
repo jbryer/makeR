@@ -7,7 +7,7 @@
     R = R.version$version.string,
     platform = R.version$platform,
     user = Sys.info()["user"],
-    nodename = Sys.info()["nodename"], file = NULL)
+    nodename = Sys.info()["nodename"], files = NULL)
 }
 \arguments{
   \item{buildXML}{an XML element.}
@@ -31,8 +31,8 @@
   \item{nodename}{the name of the node on which this file
   was built}
 
-  \item{file}{the name of the file that was built. This is
-  typicall a PDF.}
+  \item{files}{the name of the files that were built. This
+  is typically a list of PDFs.}
 }
 \description{
   Constructor for a Build class. This is an interal method

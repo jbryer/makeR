@@ -35,6 +35,9 @@ sanitizeLatexR <- function(str) {
 	gsub('([#$%&~_\\^\\\\{}])', '\\\\\\1', str, perl = TRUE);
 }
 
+@
+
+<<echo=FALSE,results=hide,cache=TRUE>>=
 root = getRSSFeed(feedURL="http://r-bloggers.com/feed",
 				  email=email,
 				  passwd=passwd,
@@ -109,4 +112,3 @@ for(i in 1:nrow(monthly)) {
 \end{enumerate}
 
 \end{document}
-

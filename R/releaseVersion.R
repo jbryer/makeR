@@ -45,15 +45,16 @@ releaseVersion <- function(pv, major=NULL, increment=TRUE, ...) {
 		}
 	}
 	buildNum = build$Build
-	filename = build$File
 	minorNum = build$Minor
-	
-	fromFile = paste(pv$BuildDir, '/', major, '.', version$Minor, '/', 
-					 filename, sep='')
-	toFile = paste(pv$ReleaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
-				   major, '.', minorNum, '.pdf', sep='')
-	cat(paste('Copying', fromFile, 'to', toFile))
-	file.copy(fromFile, toFile)
+	for(i in seq_len(length(build$Files))) {
+		filename = build$Files[i]
+		fromFile = paste(pv$BuildDir, '/', major, '.', version$Minor, '/', 
+						 filename, sep='')
+		toFile = paste(pv$ReleaseDir, '/', substr(filename, 1, (nchar(filename)-4)), '-', 
+					   major, '.', minorNum, '.pdf', sep='')
+		cat(paste('Copying', fromFile, 'to', toFile))
+		file.copy(fromFile, toFile)
+	}
 	
 	if(increment) {
 		#Increment the minor version number

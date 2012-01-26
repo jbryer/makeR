@@ -73,7 +73,6 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	wd = eval(setwd(buildDir), envir=buildEnv)
 	
 	cat(paste('Bulding version ', majorNum, '.', minorNum, '-', buildNum, '\n', sep=''))
-	rnw = list.files(buildDir, pattern=sourceFile, ignore.case=TRUE)
 	if(is.na(name)) {
 		eval(sink(paste('build.', majorNum, '.', minorNum, '-', buildNum, '.log', sep=''), 
 			 append=TRUE, split=FALSE), envir=buildEnv)
@@ -83,11 +82,9 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	}
 
 	success = FALSE
-	fileBuilt = NULL
+	filesBuilt = NULL
 	try( {
-		for(i in 1:length(rnw)) {
-			fileBuilt = builder(rnw[i], buildEnv, ...)
-		}
+		filesBuilt = builder(sourceFile, buildEnv, ...)
 		success = TRUE
 	})
 	
@@ -109,13 +106,15 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 			buildNum=buildNum,
 			name = name,
 			#TODO: support multiple files in the Build class
-			file=fileBuilt)
+			files=filesBuilt)
 		builds = pv$Builds
 		builds[[as.character(length(pv$Builds) + 1)]] = b
 		assign("Builds", builds, envir=pv)
 		
 		if(isAutoOpen()) {
-			try(system(paste("open \"", buildDir, "/",	fileBuilt, "\"", sep="")))
+			for(i in seq_len(length(filesBuilt))) {
+				try(system(paste("open \"", buildDir, "/",	filesBuilt[i], "\"", sep="")))
+			}
 		}
 		
 		invisible(b)

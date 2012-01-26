@@ -48,8 +48,13 @@ write.Project <- function(pv) {
 											 R=b$R,
 											 platform=b$Platform[[1]],
 											 nodename=b$Nodename[[1]],
-											 user=b$User[[1]],
-											 file=b$File))
+											 user=b$User[[1]] ))
+			#Files built
+			if(length(b$Files) > 0) {
+				for(i in 1:length(b$Files)) {
+					build = addChildren(build, xmlNode("file", b$Files[i]))
+				}
+			}
 			builds = addChildren(builds, build)
 		}
 		root = addChildren(root, builds)

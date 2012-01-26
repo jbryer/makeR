@@ -128,15 +128,15 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	pv$File.Info <- NULL
 	
 	#Define methods
-	pv$build <- function(version=NULL, saveEnv=TRUE, builder=builder.rnw, ...) { 
-		buildVersion(pv, version.major=version, saveEnv=saveEnv, builder=builder, ...)
+	pv$build <- function(version=NULL, saveEnv=TRUE, builder=builder.rnw, sourceFile=pv$SourceFile, ...) { 
+		buildVersion(pv, version.major=version, saveEnv=saveEnv, builder=builder, sourceFile=sourceFile,...)
 		if(isAutoSave()) {
 			pv$save()
 		}
 		invisible()
 	}
-	pv$rebuild <- function(version=NULL, saveEnv=TRUE, bulder=builder.rnw, ...) {
-		buildVersion(pv, version=version, saveEnv=saveEnv, bulder=builder, clean=FALSE, ...)
+	pv$rebuild <- function(version=NULL, saveEnv=TRUE, bulder=builder.rnw, sourceFile=pv$SourceFile, ...) {
+		buildVersion(pv, version=version, saveEnv=saveEnv, bulder=builder, clean=FALSE, sourceFile=sourceFile, ...)
 		if(isAutoSave()) {
 			pv$save()
 		}

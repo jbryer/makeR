@@ -1,12 +1,11 @@
 \name{builder.tex}
 \alias{builder.tex}
-\title{This function will build Sweave (Rnw) files. Specifically this function will
-first run Stangle, then Sweave, and finally texti2pdf.}
+\title{This function will build LaTeX (tex) files using texti2pdf.}
 \usage{
-  builder.tex(file, theenv, ...)
+  builder.tex(sourceFile, theenv, ...)
 }
 \arguments{
-  \item{file}{the source file to build.}
+  \item{sourceFile}{the source file to build.}
 
   \item{theenv}{the environment to build in.}
 
@@ -16,8 +15,7 @@ first run Stangle, then Sweave, and finally texti2pdf.}
   the name of the file if successfully built.
 }
 \description{
-  This function will build Sweave (Rnw) files. Specifically
-  this function will first run Stangle, then Sweave, and
-  finally texti2pdf.
+  This function will build LaTeX (tex) files using
+  texti2pdf.
 }
 
