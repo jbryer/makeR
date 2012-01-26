@@ -41,8 +41,8 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	if(length(pv$Properties) > 0) {
 		for(i in 1:length(pv$Properties)) {
 			p = pv$Properties[[i]]
-			cat(paste(names(pv$Properties)[i], ' = ', p[[1]]), '\n', sep='')
-			assign(as.character(names(pv$Properties)[i]), p[[1]], envir=buildEnv)
+			cat(paste(names(pv$Properties)[i], ' = ', paste(p, collapse=', '), '\n', sep=''))
+			assign(as.character(names(pv$Properties)[i]), p, envir=buildEnv)
 		}
 	}
 	
@@ -51,7 +51,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 		for(i in 1:length(cv$Properties)) {
 			p = cv$Properties[[i]]
 			cat(paste(names(cv$Properties)[i], ' = ', p[[1]]), '\n', sep='')
-			assign(names(cv$Properties)[i], p[[1]], envir=buildEnv)
+			assign(names(cv$Properties)[i], p, envir=buildEnv)
 		}
 	}
 	

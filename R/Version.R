@@ -14,25 +14,27 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 		version$Minor = xmlAttrs(xml)[['minor']]
 		version$Properties = list()
 		properties = which(xmlSApply(xml, xmlName) == 'property')
-		if(length(properties) > 0) {
-			for(i in 1:length(properties)) {
-				p = xml[[properties[i]]]
-				n = xmlAttrs(p)[['name']]
-				v = xmlAttrs(p)[['value']]
-				t = xmlAttrs(p)[['type']]
-				if(is.na(t)) {
-					version$Properties[[n]] = v
-				} else if(t == 'character') {
-					version$Properties[[n]] = as.character(v)
-				} else if(t == 'numeric') {
-					version$Properties[[n]] = as.numeric(v)
-				} else if(t == 'logical') {
-					version$Properties[[n]] = as.logical(v)
-				#} else if(t == 'date') {
-				#	version$Properties[[n]] = as.Date(v)
-				} else {
-					version$Properties[[n]] = v
-				}
+		for(i in seq_len(length(properties))) {
+			p = xml[[properties[i]]]
+			n = xmlAttrs(p)['name']
+			t = xmlAttrs(p)['type']
+			values = which(xmlSApply(p, xmlName) == 'value')
+			value = character()
+			for(v in seq_len(length(values))) {
+				value = c(value, xmlValue(p[[v]]))
+			}
+			if(is.na(t)) {
+				version$Properties[[n]] = value
+			} else if(t == 'character') {
+				version$Properties[[n]] = as.character(value)
+			} else if(t == 'numeric') {
+				version$Properties[[n]] = as.numeric(value)
+			} else if(t == 'logical') {
+				version$Properties[[n]] = as.logical(value)
+			#} else if(t == 'date') {
+			#	version$Properties[[n]] = as.Date(value)
+			} else {
+				version$Properties[[n]] = value
 			}
 		}
 		if('name' %in% names(xmlAttrs(xml))) {
@@ -96,7 +98,7 @@ print.Version <- function(x, ...) {
 	if(length(x$Properties) > 0) {
 		for(i in 1:length(x$Properties)) {
 			p = x$Properties[i]
-			cat(paste('  ', names(x$Properties)[i], ' = ', p[[1]]), '\n', sep='')
+			cat(paste('  ', names(x$Properties)[i], ' = ', paste(p, collapse=', '), '\n', sep=''))
 		}
 	}
 }

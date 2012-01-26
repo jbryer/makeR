@@ -9,13 +9,13 @@ write.Project <- function(pv) {
 									  releaseDir=pv$ReleaseDir,
 									  sourceDir=pv$SourceDir,
 									  sourceFile=pv$SourceFile))
-	if(length(pv$Properties) > 0) {
-		for(i in 1:length(pv$Properties)) {
-			property = xmlNode('property', attrs=c(name=names(pv$Properties[i]),
-												   value=pv$Properties[[i]],
-												   type=class(pv$Properties[[i]])))
-			root = addChildren(root, property)
+	for(i in seq_len(length(pv$Properties))) {
+		property = xmlNode('property', attrs=c(name=names(pv$Properties[i]),
+											   type=class(pv$Properties[[i]])))
+		for(p in seq_len(length(pv$Properties[[i]]))) {
+			property = addChildren(property, xmlNode("value",pv$Properties[[i]][p]))
 		}
+		root = addChildren(root, property)
 	}
 	if(length(pv$Versions) > 0) {
 		versions = xmlNode('versions')

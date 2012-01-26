@@ -97,7 +97,7 @@
 #' }
 Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 					buildDir="build", releaseDir="release", 
-					sourceFile=".rnw",
+					sourceFile=NULL,
 					properties=list()) {
 	pv <- NULL
 	if(file.exists(paste(projectDir, "/PROJECT.xml", sep=''))) {
@@ -241,25 +241,27 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 	
 	pv$Properties <- list()
 	properties = which(xmlSApply(root, xmlName) == 'property')
-	if(length(properties) > 0) {
-		for(i in properties) {
-			p = root[[i]]
-			n = xmlAttrs(p)['name']
-			v = xmlAttrs(p)['value']
-			t = xmlAttrs(p)['type']
-			if(is.na(t)) {
-				pv$Properties[[n]] = v
-			} else if(t == 'character') {
-				pv$Properties[[n]] = as.character(v)
-			} else if(t == 'numeric') {
-				pv$Properties[[n]] = as.numeric(v)
-			} else if(t == 'logical') {
-				pv$Properties[[n]] = as.logical(v)
-			#} else if(t == 'date') {
-			#	pv$Properties[[n]] = as.Date(v)
-			} else {
-				pv$Properties[[n]] = v
-			}
+	for(i in seq_len(length(properties))) {
+		p = root[[i]]
+		n = xmlAttrs(p)['name']
+		t = xmlAttrs(p)['type']
+		values = which(xmlSApply(p, xmlName) == 'value')
+		value = character()
+		for(v in seq_len(length(values))) {
+			value = c(value, xmlValue(p[[v]]))
+		}
+		if(is.na(t)) {
+			pv$Properties[[n]] = value
+		} else if(t == 'character') {
+			pv$Properties[[n]] = as.character(value)
+		} else if(t == 'numeric') {
+			pv$Properties[[n]] = as.numeric(value)
+		} else if(t == 'logical') {
+			pv$Properties[[n]] = as.logical(value)
+		#} else if(t == 'date') {
+		#	pv$Properties[[n]] = as.Date(value)
+		} else {
+			pv$Properties[[n]] = value
 		}
 	}
 	
@@ -330,7 +332,7 @@ print.Project <- function(x, ...) {
 		cat('Properties:\n')
 		for(i in 1:length(x$Properties)) {
 			p = x$Properties[[i]]
-			cat(paste('  ', names(x$Properties)[i], ' = ', p[[1]]), '\n', sep='')
+			cat(paste('  ', names(x$Properties)[i], ' = ', paste(p, collapse=', '), '\n', sep=''))
 		}
 	}
 	cat(paste('There are currently ', length(x$Versions), ' versions defined:\n', sep=''))
