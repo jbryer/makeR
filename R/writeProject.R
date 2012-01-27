@@ -24,13 +24,16 @@ write.Project <- function(pv) {
 												 major=pv$Versions[[i]]$Major,
 												 minor=pv$Versions[[i]]$Minor))
 			props = pv$Versions[[i]]$Properties
-			if(length(props) > 0) {
-				for(i in 1:length(props)) {
-					version = addChildren(version, xmlNode('property', 
-														   attrs=c(name=names(props[i]),
-														   		value=props[[i]],
-														   		type=class(props[[i]]))))
+			for(i in seq_len(length(props))) {
+				#version = addChildren(version, xmlNode('property', 
+				#									   attrs=c(name=names(props[i]),
+				#									   		type=class(props[[i]]))))
+				property = xmlNode('property', attrs=c(name=names(props[i]),
+													   type=class(props[[i]])))
+				for(p in seq_len(length(props[[i]]))) {
+					property = addChildren(property, xmlNode("value",props[[i]][p]))
 				}
+				version = addChildren(version, property)
 			}
 			versions = addChildren(versions, version)
 		}
