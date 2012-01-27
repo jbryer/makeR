@@ -14,7 +14,7 @@
 \usage{
   Project(projectDir = getwd(), name = NULL,
     sourceDir = "source", buildDir = "build",
-    releaseDir = "release", sourceFile = ".rnw",
+    releaseDir = "release", sourceFile = NULL,
     properties = list())
 }
 \arguments{
@@ -65,10 +65,10 @@
   See \code{demo('rbloggers')} for an interactive example.
 
   Properties: \itemize{ \item \code{BuildDir} - the
-  directory where builds will occurr.  \item \code{Builds}
-  - list of completed builds.  \item \code{CurrentBuild} -
-  an integer of the last build.  \item \code{ProjectDir} -
-  the base directory where the project is located.  \item
+  directory where builds will occur.  \item \code{Builds} -
+  list of completed builds.  \item \code{CurrentBuild} - an
+  integer of the last build.  \item \code{ProjectDir} - the
+  base directory where the project is located.  \item
   \code{ProjectFile} - the name of the source file to be
   built.  \item \code{ProjectName} - the name of the
   project.  \item \code{Properties} - a list of the project
@@ -91,7 +91,7 @@
   \code{version} - (optional) the version to rebuild.
   \code{saveEnv} - if TRUE, the build environment (.rda)
   will be saved in the build directory.  \code{builder} -
-  the bulder function.See also \code{\link{builder.rnw}},
+  the builder function.See also \code{\link{builder.rnw}},
   \code{\link{builder.cacheSweave}},
   \code{\link{builder.tex}} \item \code{save} Saves the
   PROJECT.xml file.  \item \code{newVersion} Creates a new
@@ -100,7 +100,7 @@
   properties.  \item \code{release} Releases a version
   (i.e. copies the built file to the releases directory)
   \code{version} - (optional) the version to release. If
-  ommitted the latest version will be released.  \item
+  omitted the latest version will be released.  \item
   \code{getProperties} Returns the project properties.
   \item \code{addProperty} Adds a project property.
   \code{name} - The property name.  \code{value} - The

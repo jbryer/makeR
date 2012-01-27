@@ -2,10 +2,10 @@
 \alias{builder.tex}
 \title{This function will build LaTeX (tex) files using texti2pdf.}
 \usage{
-  builder.tex(sourceFile, theenv, ...)
+  builder.tex(project, theenv, ...)
 }
 \arguments{
-  \item{sourceFile}{the source file to build.}
+  \item{project}{the project to be built.}
 
   \item{theenv}{the environment to build in.}
 
