@@ -33,5 +33,5 @@ browseVignettes()
 vignette('makeR')
 
 email = 'jason.bryer@gmail.com'
-passwd = 'mzwghddudeonkamj'
+passwd = ''
 
