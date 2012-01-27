@@ -16,9 +16,22 @@ check("makeR")
 library(makeR)
 ls('package:makeR')
 
-################################################################################
-setwd('~/Dropbox/Projects/TestProject')
-pv = Project()
-pv
+?Project 
 
+setwd("~/Dropbox/Projects"); detach('package:makeR'); document('makeR'); install('makeR'); library(makeR)
+
+################################################################################
+isAutoSave()
+setAutoSave(FALSE)
+isAutoOpen()
+setAutoOpen(FALSE)
+
+demo('makeR')
+demo('stocks')
+
+browseVignettes()
+vignette('makeR')
+
+email = 'jason.bryer@gmail.com'
+passwd = 'mzwghddudeonkamj'
 

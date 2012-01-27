@@ -62,8 +62,7 @@ myProject = Project(name="RBloggers",
 
 \subsection{Create initial version}
 \begin{example}
-myProject$newVersion(myProject,
-  name='2011-12', 
+myProject$newVersion(name='2011-12', 
   properties=list(startDate='2011-12-01', 
   endDate='2011-12-31'))
 \end{example}
@@ -152,41 +151,49 @@ The \file{PROJECT.xml} file defines the properties, versions, and builds of a pa
 %\framebox[\textwidth]{\hfill \raisebox{-.45in}{\rule{0in}{1in}}
 \begin{example} 
 <?xml version="1.0"?>
-<project name="RBloggers" buildDir="build" releaseDir="release" sourceDir="source">
-  <property name="email" value="GOOGLE READER USERNAME" type="character"/>
-  <property name="passwd" value="GOOGLE READER PASSWORD" type="character"/>
+<project name="stocks" buildDir="build" releaseDir="release" sourceDir="source">
+  <property name="src" type="character">
+    <value>yahoo</value>
+  </property>
+  <property name="stocks" type="character">
+    <value>GOOG</value>
+    <value>AAPL</value>
+    <value>AMZN</value>
+    <value>MSFT</value>
+  </property>
   <versions>
     <version name="2011-12" major="1" minor="1">
-      <property name="startDate" value="2011-12-01" type="character"/>
-      <property name="endDate" value="2011-12-31" type="character"/>
+      <property name="month" value="2011-12" type="character"/>
     </version>
   </versions>
   <builds>
-    <build major="1" minor="0" build="1" name="2011-12" timestamp="Wed Jan 18 12:29:51 2012" 
-        R="R version 2.14.0 (2011-10-31)" platform="x86_64-apple-darwin9.8.0" 
-        nodename="Jason-Bryers-MacBook-Air-2.local" 
-        user="jbryer" file="rbloggers.pdf"/>
+    <build major="1" minor="0" build="1" name="2011-12" timestamp="Thu Jan 26 20:55:10 2012" 
+      R="R version 2.14.0 (2011-10-31)" platform="x86_64-apple-darwin9.8.0" 
+      nodename="Jason-Bryers-MacBook-Air-2.local" user="jbryer">
+      <file>2011-12.png</file>
+    </build>
   </builds>
 </project>
 \end{example}
 %}
 \caption{\label{figure:projectxml}
-\file{PROJECT.xml} for the R-Bloggers demo project.}
+\file{PROJECT.xml} for the stocks demo.}
 \end{figure*}
 
 \section{Custom builders}
 
 \begin{example}
-builder.rnw <- function(file, theenv, ...) \{
-  Stangle(file)
-  envstr = env2string(theenv)
-  thecall = paste('Rscript -e "', envstr,
-      ' Sweave(\'', file, '\')"', sep='')
-  system(thecall)
-  texi2pdf(paste(substr(file, 1,
-      (nchar(file)-4)), '.tex', sep=''))
-  return(paste(substr(file, 1,
-      (nchar(file)-4)), '.pdf', sep=''))
+builder.png <- function(project, theenv, ...) \{
+  sourceFile = ifelse(is.null(project$SourceFile), 
+    '.r$', project$SourceFile)
+  wd = eval(getwd(), envir=theenv)
+  files = list.files(path=wd, pattern=sourceFile,
+    ignore.case=TRUE)
+  for(i in seq_len(length(files))) \{
+    sys.source(files[i], envir=theenv)
+  \}
+  return(list.files(path=wd, pattern=".png$",
+    ignore.case=TRUE))
 \}
 \end{example}
 

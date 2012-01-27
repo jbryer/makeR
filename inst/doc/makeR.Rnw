@@ -1,0 +1,4 @@
+%\VignetteIndexEntry{The makeR Package}
+\documentclass{article}
+\begin{document}
+\end{document}
