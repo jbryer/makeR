@@ -8,14 +8,14 @@ file.copy(paste(getwd(), '/stocks/stocks.R', sep=''),
 
 ## Define the custom builder
 builder.png <- function(project, theenv, ...) {
-	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
+	sourceFile = ifelse(is.null(project$SourceFile), '.r$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
 	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
 	for(i in seq_len(length(files))) {
 		cat(paste("Executing ", files[i], "...", sep=''))
 		sys.source(files[i], envir=theenv)
 	}
-	return(list.files(path=wd, pattern=".png", ignore.case=TRUE))
+	return(list.files(path=wd, pattern=".png$", ignore.case=TRUE))
 }
 
 ## Create the makeR project
