@@ -16,7 +16,7 @@ check("makeR")
 library(makeR)
 ls('package:makeR')
 
-?Project 
+?Project
 
 setwd("~/Dropbox/Projects"); detach('package:makeR'); document('makeR'); install('makeR'); library(makeR)
 
@@ -31,7 +31,3 @@ demo('stocks')
 
 browseVignettes()
 vignette('makeR')
-
-email = 'jason.bryer@gmail.com'
-passwd = 'mzwghddudeonkamj'
-
