@@ -21,7 +21,8 @@ builder.rnw <- function(project, theenv, ...) {
 		cat(paste(thecall, '\n'))
 		system(thecall)
 		cat('Running texi2dvi...\n')
-		texi2pdf(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''))
+		#texi2pdf(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''))
+		texi2dvi(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''), pdf=TRUE)
 		built = c(built, paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))
 	}
 	return(built)
