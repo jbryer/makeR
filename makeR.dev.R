@@ -26,7 +26,7 @@ setAutoSave(FALSE)
 isAutoOpen()
 setAutoOpen(FALSE)
 
-demo('makeR')
+demo('rbloggers')
 demo('stocks')
 
 browseVignettes()
