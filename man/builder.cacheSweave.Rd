@@ -9,6 +9,9 @@
 
   \item{theenv}{the environment to build in.}
 
+  \item{fork}{if true Sweave will be executed in a separate
+  R instance.}
+
   \item{...}{other unspecified parameters}
 }
 \value{

@@ -3,10 +3,11 @@
 #'
 #' @param project the project to be built.
 #' @param theenv the environment to build in.
+#' @param fork if true Sweave will be executed in a separate R instance.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.rnw <- function(project, theenv, ...) {
+builder.rnw <- function(project, theenv, fork=TRUE, ...) {
 	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
 	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
@@ -16,10 +17,15 @@ builder.rnw <- function(project, theenv, ...) {
 		cat('Running Stangle...\n')
 		Stangle(file)
 		cat('Running Sweave...\n')
-		envstr = env2string(theenv)
-		thecall = paste('Rscript -e "', envstr, ' Sweave(\'', file, '\')"', sep='')
-		cat(paste(thecall, '\n'))
-		system(thecall)
+		if(fork) {
+			envstr = env2string(theenv)
+			thecall = paste('Rscript -e "', envstr, ' Sweave(\'', file, '\')"', sep='')
+			cat(paste(thecall, '\n'))
+			system(thecall)
+		} else {
+			for(i in ls(theenv)) { assign(i, get(i, envir=theenv)) }
+			Sweave(file)
+		}
 		cat('Running texi2dvi...\n')
 		#texi2pdf(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''))
 		texi2dvi(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''), pdf=TRUE)
