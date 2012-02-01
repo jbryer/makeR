@@ -6,7 +6,7 @@
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.cacheSweave <- function(project, theenv, ...) {
+builder.cacheSweave <- function(project, theenv, fork=TRUE, ...) {
 	require(cacheSweave)
 	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
 	wd = eval(getwd(), envir=theenv)
