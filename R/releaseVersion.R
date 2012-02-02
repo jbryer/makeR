@@ -65,7 +65,7 @@ releaseVersion <- function(pv, major=NULL, increment=TRUE, ...) {
 	}
 	
 	if(isAutoOpen()) {
-		try(system(paste("open \"", toFile, "\"", sep='')))
+		try(system(paste("open \"", pv$ProjectDir, "/", toFile, "\"", sep='')))
 	}
 	if(!is.null(wd)) setwd(wd)
 	invisible(pv)

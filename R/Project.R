@@ -196,7 +196,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		list.files(paste(pv$ProjectDir, '/', pv$ReleaseDir, sep=''))
 	}
 	pv$openRelease <- function(file) {
-		system(paste("open \"", pv$ProjectDir, "/", file, sep=''))
+		system(paste("open \"", pv$ProjectDir, "/", pv$ReleaseDir ,"/", file, sep=''))
 	}
 	
 	pv <- list2env(pv)
