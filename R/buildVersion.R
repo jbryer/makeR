@@ -113,7 +113,8 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 		
 		if(isAutoOpen()) {
 			for(i in seq_len(length(filesBuilt))) {
-				try(system(paste("open \"", buildDir, "/",	filesBuilt[i], "\"", sep="")))
+				try(system(paste("open \"", pv$ProjectDir, '/',  buildDir, "/",
+								 filesBuilt[i], "\"", sep="")))
 			}
 		}
 		

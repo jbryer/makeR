@@ -32,3 +32,4 @@ Collate:
     'builder.tex.R'
     'env2string.R'
     'builder.cacheSweave.R'
+    'makeR.R'

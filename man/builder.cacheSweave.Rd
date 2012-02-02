@@ -2,7 +2,7 @@
 \alias{builder.cacheSweave}
 \title{This function will build Sweave (Rnw) files using the cacheSweave driver.}
 \usage{
-  builder.cacheSweave(project, theenv, ...)
+  builder.cacheSweave(project, theenv, fork = TRUE, ...)
 }
 \arguments{
   \item{project}{the project to be built.}
