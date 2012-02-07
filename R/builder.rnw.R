@@ -8,28 +8,33 @@
 #' @return the name of the file if successfully built.
 #' @export
 builder.rnw <- function(project, theenv, fork=TRUE, ...) {
-	sourceFile = ifelse(is.null(project$SourceFile), '.rnw$', project$SourceFile)
-	wd = eval(getwd(), envir=theenv)
-	files = list.files(path=wd, pattern=sourceFile, ignore.case=TRUE)
+	sleeptime = 2
+	sourceFile = ifelse(is.null(project$SourceFile), ".rnw$", project$SourceFile)
+	wd = eval(getwd(), envir = theenv)
+	files = list.files(path = wd, pattern = sourceFile, ignore.case = TRUE)
 	built = character()
 	for(i in seq_len(length(files))) {
 		file = files[i]
-		cat('Running Stangle...\n')
+		cat("Running Stangle...\n")
 		Stangle(file)
-		cat('Running Sweave...\n')
+		cat("Running Sweave...\n")
 		if(fork) {
 			envstr = env2string(theenv)
-			thecall = paste('Rscript -e "', envstr, ' Sweave(\'', file, '\')"', sep='')
-			cat(paste(thecall, '\n'))
+			thecall = paste("Rscript -e \"", envstr, " Sweave('", file, "')\"", sep = "")
+			cat(paste(thecall, "\n"))
 			system(thecall)
 		} else {
-			for(i in ls(theenv)) { assign(i, get(i, envir=theenv)) }
+			for (i in ls(theenv)) {
+				assign(i, get(i, envir = theenv))
+			}
 			Sweave(file)
 		}
-		cat('Running texi2dvi...\n')
-		#texi2pdf(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''))
-		texi2dvi(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''), pdf=TRUE)
-		built = c(built, paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))
+		Sys.sleep(sleeptime)
+		texfile = paste(substr(file, 1, (nchar(file) - 4)), ".tex", sep = "")
+		cat(paste("Running texi2pdf on ", texfile, "...\n", sep=''))
+		texi2pdf(texfile, quiet=FALSE)
+		built = c(built, paste(substr(file, 1, (nchar(file) - 4)), ".pdf", sep = ""))
+		Sys.sleep(sleeptime)
 	}
 	return(built)
 }
