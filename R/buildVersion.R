@@ -37,23 +37,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	cat(paste('Building verison ', ifelse(is.null(name), majorNum, name), '.', 
 			  minorNum, '-', buildNum, '...\n', sep=''))
 	
-	cat('Setting global properties...\n')
-	if(length(pv$Properties) > 0) {
-		for(i in 1:length(pv$Properties)) {
-			p = pv$Properties[[i]]
-			cat(paste(names(pv$Properties)[i], ' = ', paste(p, collapse=', '), '\n', sep=''))
-			assign(as.character(names(pv$Properties)[i]), p, envir=buildEnv)
-		}
-	}
-	
-	cat('Setting version properties...\n')
-	if(length(cv$Properties) > 0) {
-		for(i in 1:length(cv$Properties)) {
-			p = cv$Properties[[i]]
-			cat(paste(names(cv$Properties)[i], ' = ', p[[1]]), '\n', sep='')
-			assign(names(cv$Properties)[i], p, envir=buildEnv)
-		}
-	}
+	cv$assignProperties(theenv=buildEnv)
 	
 	if(is.na(name)) {
 		buildDir = paste(pv$ProjectDir, '/', pv$BuildDir, '/', majorNum, '.', minorNum, sep='')

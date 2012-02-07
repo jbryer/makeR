@@ -1,7 +1,19 @@
 #' This is an internal method and should not be called directly.
 #'
 #' Constructor for a Version class. This is an interal method that builds a
-#' Version class from XML.
+#' Version class from XML. A Version has the following methods:
+#'
+#' \itemize{
+#'    \item \code{getProperties} Returns the Version properties.
+#'    \item \code{addProperty} Adds a Version property.
+#'            \code{name} - The property name.
+#'            \code{value} - The property value.
+#'    \item \code{removeProperty} Removes the given Version property.
+#'            \code{name} - The property name.
+#'    \item \code{assignProperties} - Sets the project and version properties.
+#'            \code{theenv} - the envirnment to which the properties will be assigned.
+#'                            This defaults to the .GlobalEnv.
+#' }
 #'
 #' @param pv the Project
 #' @param name the name of the version
@@ -77,6 +89,20 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 			pv$save()
 		}
 		invisible()
+	}
+	version$assignProperties <- function(theenv=.GlobalEnv) {
+		cat('Setting global properties...\n')
+		for(i in seq_len(length(pv$Properties))) {
+			p = pv$Properties[[i]]
+			cat(paste(names(pv$Properties)[i], ' = ', paste(p, collapse=', '), '\n', sep=''))
+			assign(as.character(names(pv$Properties)[i]), p, envir=theenv)
+		}
+		cat('Setting version properties...\n')
+		for(i in seq_len(length(version$Properties))) {
+			p = version$Properties[[i]]
+			cat(paste(names(version$Properties)[i], ' = ', p[[1]]), '\n', sep='')
+			assign(names(version$Properties)[i], p, envir=theenv)
+		}
 	}
 	
 	version <- list2env(version)
