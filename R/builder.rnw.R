@@ -4,10 +4,12 @@
 #' @param project the project to be built.
 #' @param theenv the environment to build in.
 #' @param fork if true Sweave will be executed in a separate R instance.
+#' @param debug debug option sent to the Sweave function. If true, the output
+#'        of R code from the Rnw file will be printed as it is running.
 #' @param ... other unspecified parameters
 #' @return the name of the file if successfully built.
 #' @export
-builder.rnw <- function(project, theenv, fork=TRUE, ...) {
+builder.rnw <- function(project, theenv, fork=TRUE, debug=TRUE, ...) {
 	sleeptime = 2
 	sourceFile = ifelse(is.null(project$SourceFile), ".rnw$", project$SourceFile)
 	wd = eval(getwd(), envir = theenv)
@@ -20,14 +22,15 @@ builder.rnw <- function(project, theenv, fork=TRUE, ...) {
 		cat("Running Sweave...\n")
 		if(fork) {
 			envstr = env2string(theenv)
-			thecall = paste("Rscript -e \"", envstr, " Sweave('", file, "')\"", sep = "")
+			thecall = paste("Rscript -e \"", envstr, 
+						" Sweave('", file, "', debug=", debug, ")\"", sep = "")
 			cat(paste(thecall, "\n"))
 			system(thecall)
 		} else {
 			for (i in ls(theenv)) {
-				assign(i, get(i, envir = theenv))
+				assign(i, get(i, envir = theenv), envir=globalenv())
 			}
-			Sweave(file)
+			Sweave(file, debug=debug)
 		}
 		Sys.sleep(sleeptime)
 		texfile = paste(substr(file, 1, (nchar(file) - 4)), ".tex", sep = "")
