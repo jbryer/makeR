@@ -3,7 +3,7 @@
 \title{This is an internal method and should not be called directly.}
 \usage{
   buildVersion(pv, version.major = NULL, saveEnv = TRUE,
-    builder = builder.rnw, clean = TRUE,
+    builder = getDefaultBuilder(), clean = FALSE,
     sourceFile = pv$SourceFile, ...)
 }
 \arguments{
@@ -17,8 +17,8 @@
 
   \item{builder}{the builder function to use.}
 
-  \item{clean}{if TRUE the source files will be (re)copied
-  to the buld directory.}
+  \item{clean}{if TRUE all files in the build directory
+  will be deleted before building.}
 
   \item{sourceFile}{the name of the source file to build.}
 

@@ -16,21 +16,21 @@ builder.cacheSweave <- function(project, theenv, fork=TRUE, debug=TRUE, ...) {
 	built = character()
 	for(i in seq_len(length(files))) {
 		file = files[i]
-		cat('Running Stangle...\n')
+		message('Running Stangle...\n')
 		Stangle(file)
-		cat('Running Sweave with cacheSweave...\n')
+		message('Running Sweave with cacheSweave...\n')
 		if(fork) {
 			envstr = env2string(theenv)
 			thecall = paste('Rscript -e "require(cacheSweave); ', envstr, 
 							' Sweave(\'', file, '\', driver=cacheSweaveDriver, debug=', 
 							debug, ')"', sep='')
-			cat(paste(thecall, '\n'))
+			message(paste(thecall, '\n'))
 			system(thecall)
 		} else {
 			for(i in ls(theenv)) { assign(i, get(i, envir=theenv), envir=globalenv()) }
 			Sweave(file, driver=cacheSweaveDriver, debug=debug)
 		}
-		cat('Running texi2dvi...\n')
+		message('Running texi2dvi...\n')
 		texi2pdf(paste(substr(file, 1, (nchar(file)-4)), '.tex', sep=''))
 		built = c(built, paste(substr(file, 1, (nchar(file)-4)), '.pdf', sep=''))
 	}

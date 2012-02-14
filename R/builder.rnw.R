@@ -17,14 +17,14 @@ builder.rnw <- function(project, theenv, fork=TRUE, debug=TRUE, ...) {
 	built = character()
 	for(i in seq_len(length(files))) {
 		file = files[i]
-		cat("Running Stangle...\n")
+		message("Running Stangle...\n")
 		Stangle(file)
-		cat("Running Sweave...\n")
+		message("Running Sweave...\n")
 		if(fork) {
 			envstr = env2string(theenv)
 			thecall = paste("Rscript -e \"", envstr, 
 						" Sweave('", file, "', debug=", debug, ")\"", sep = "")
-			cat(paste(thecall, "\n"))
+			message(paste(thecall, "\n"))
 			system(thecall)
 		} else {
 			for (i in ls(theenv)) {
@@ -34,7 +34,7 @@ builder.rnw <- function(project, theenv, fork=TRUE, debug=TRUE, ...) {
 		}
 		Sys.sleep(sleeptime)
 		texfile = paste(substr(file, 1, (nchar(file) - 4)), ".tex", sep = "")
-		cat(paste("Running texi2pdf on ", texfile, "...\n", sep=''))
+		message(paste("Running texi2pdf on ", texfile, "...\n", sep=''))
 		texi2pdf(texfile, quiet=FALSE)
 		built = c(built, paste(substr(file, 1, (nchar(file) - 4)), ".pdf", sep = ""))
 		Sys.sleep(sleeptime)

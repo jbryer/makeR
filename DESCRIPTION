@@ -17,7 +17,7 @@ Depends:
     tools,
     XML
 Suggests:
-    RCurl,lattice,chron,grid,cacheSweave
+    RCurl,lattice,chron,grid,cacheSweave,knitr
 Collate:
     'Build.R'
     'Version.R'
@@ -33,3 +33,4 @@ Collate:
     'env2string.R'
     'builder.cacheSweave.R'
     'makeR.R'
+    'builder.knitr.R'

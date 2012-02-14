@@ -41,6 +41,7 @@
 #'                           in the build directory.
 #'            \code{builder} - the builder function. See also \code{\link{builder.rnw}},
 #'                  \code{\link{builder.cacheSweave}}, \code{\link{builder.tex}}
+#'            \code{clean} - if TRUE a clean build will be performed.
 #'    \item \code{rebuild} Rebuilds the project without first copying the files.
 #'            \code{version} - (optional) the version to rebuild.
 #'            \code{saveEnv} - if TRUE, the build environment (.rda) will be saved
@@ -76,8 +77,9 @@
 #'        for new projects.
 #' @param releaseDir the directory where released versions will be located. Only 
 #'        used for new projects.
-#' @param sourceFile the source file to be built. This can be a file pattern so
-#'        that multiple files of the same type can be built.
+#' @param sourceFile the source file to be built. This can be a file pattern (e.g. .rnw$) so
+#'        that multiple files of the same type can be built or a single file. The
+#'        comparison will be done ignoring case.
 #' @param properties list of global properties for the project.
 #' @export
 #' @examples

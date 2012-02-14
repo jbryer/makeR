@@ -19,6 +19,7 @@ NULL
 
 AUTOSAVE <- TRUE
 AUTOOPEN <- TRUE
+DEFAULT_BUILDER <- NULL
 
 .onAttach <- function(libname, pkgname) {
 	pkgEnv = pos.to.env(match('package:makeR', search()))
@@ -28,6 +29,7 @@ AUTOOPEN <- TRUE
 	packageStartupMessage(paste("Auto opening of built and released files is ", 
 			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
 			  ". This can be changed using the setAutoOpen() function.\n", sep=''))
+	setDefaultBuilder(builder.rnw)
 }
 
 #' Sets whether the PROJECT.xml file is automatically saved when project properties
@@ -63,3 +65,22 @@ setAutoOpen <- function(value) {
 isAutoOpen <- function() {
 	return(makeR:::AUTOOPEN)
 }
+
+#' Sets the default builder if none is specified to \code{Project$build}.
+#'
+#' @param value the function to use as the default builder.
+#' @seealso \code{\link{Project}}, \code{\link{builder.rnw}}, \code{\link{builder.tex}},
+#'          \code{\link{builder.cacheSweave}}, \code{\link{builder.knitr}}
+#' @export
+setDefaultBuilder <- function(value) {
+	assignInNamespace("DEFAULT_BUILDER", value, "makeR")
+}
+
+#' Returns the default bulder if none is specified to \code{Project$build}.
+#'
+#' @seealso \code{\link{Project}}
+#' @export
+getDefaultBuilder <- function() {
+	return(makeR:::DEFAULT_BUILDER)
+}
+

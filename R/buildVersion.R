@@ -7,11 +7,11 @@
 #'        the major number or version name.
 #' @param saveEnv whether to save build environment as an Rda image file.
 #' @param builder the builder function to use.
-#' @param clean if TRUE the source files will be (re)copied to the buld directory.
+#' @param clean if TRUE all files in the build directory will be deleted before building.
 #' @param sourceFile the name of the source file to build.
 #' @param ... other non-specified parameters
-buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.rnw, 
-						 clean=TRUE, sourceFile=pv$SourceFile, ...) {
+buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaultBuilder(), 
+						 clean=FALSE, sourceFile=pv$SourceFile, ...) {
 	buildNum = pv$CurrentBuild + 1
 	cv = NULL
 	if(is.null(version.major)) {
@@ -44,15 +44,27 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=builder.r
 	} else {
 		buildDir = paste(pv$ProjectDir, '/', pv$BuildDir, '/', name, '.', minorNum, sep='')
 	}
+
+	if(clean) {
+		unlink(buildDir, force=TRUE, recursive=TRUE)
+	}
+	
 	dir.create(buildDir, recursive=TRUE, showWarnings=FALSE)
 	
-	if(clean) {
-		cat('Copying source files...\n')
-		file.copy(
-			paste(pv$ProjectDir, '/', pv$SourceDir, '/', 
-				  list.files(paste(pv$ProjectDir, '/', pv$SourceDir, '/', sep='')), sep=''),
-			to=buildDir, overwrite=TRUE, recursive=TRUE)
+	srcFiles = list.files(paste(pv$ProjectDir, '/', pv$SourceDir, '/', sep=''))
+	for(f in srcFiles) { 
+		#Check to make sure the source files have been modified
+		src.md5 = md5sum(paste(pv$ProjectDir, '/', pv$SourceDir, '/', f, sep=''))
+		dst.md5 = md5sum(paste(buildDir, '/', f, sep=''))
+		if(!is.na(dst.md5) & dst.md5 != src.md5) {
+			stop(paste('The source file ', f, ' has been modified in the build directory. ',
+					   'Specify clean=TRUE to overwrite perform a clean build.', sep=''))
+		}
 	}
+	
+	cat('Copying source files...\n')
+	file.copy(paste(pv$ProjectDir, '/', pv$SourceDir, '/', srcFiles, sep=''), 
+			  to=buildDir, overwrite=TRUE, recursive=TRUE)
 	
 	wd = eval(setwd(buildDir), envir=buildEnv)
 	

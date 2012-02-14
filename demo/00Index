@@ -1,2 +1,3 @@
 rbloggers	 This demo will create a new makeR project that will provide a summary of R-Bloggers
 stocks	 This demo will demostrate creating a custom builder that outputs PNG files.
+makeR-knitr 	This demo will use the knitr package for building.
