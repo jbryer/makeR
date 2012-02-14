@@ -69,6 +69,7 @@ Figure \ref{figure:projectxml} represents the internal structure of a \pkg{makeR
 		\item \code{version} - (optional) the version to build.
 		\item \code{saveEnv} - if TRUE, the build environment (.rda) will be saved in the build directory.
 		\item \code{builder} - the builder function.
+		\item \code{clean} - if TRUE, a clean build will be performed (i.e. all files in the build directory will be deleted).
 		\end{itemize}
 	\item \code{rebuild} Rebuilds the project without first copying the files.
 		\begin{itemize}
@@ -149,6 +150,8 @@ The \file{PROJECT.xml} file provides an XML formatted file corresponding to a pr
 The \href{http://www.r-bloggers.com}{R-Bloggers} site provides a wealth of information about R and the R community, aggregated from many different R bloggers. Like many continuously changing data sources, we wish to periodically report on recent activity on the R-Bloggers site. The base source file, \file{rbloggers.Rnw}, is included in the package (in the \file{inst/doc/robloggers} directory) as well as being hosted on \href{https://github.com/jbryer/makeR/blob/master/inst/rbloggers/rbloggers.Rnw}{Github}. This example can also be run using \code{demo('rbloggers')}.
 
 \subsection{Create new project}
+The \code{Project} function will either create a new project or load a project if one already exists in the given project directory (the current working directory if not specified). Note that if a project already exists in the given directory, all other parameters (e.g. \code{name}, \code{properties}, etc.) will be ignored.
+
 \begin{example}
 myProject = Project(name="RBloggers", 
   projectDir="~/rbloggers",
@@ -156,6 +159,8 @@ myProject = Project(name="RBloggers",
 \end{example}
 
 \subsection{Create initial version}
+The \code{Project\$newVersion} method will create a new version for the project. Version names are optional but is recommended. \pkg{makeR} will ensure there are no two versions with the same name but if the name is not provided a new version will be created with the next numerical value equal to the number of versions plus one.
+
 \begin{example}
 myProject$newVersion(name='2011-12', 
   properties=list(startDate='2011-12-01', 
@@ -163,11 +168,15 @@ myProject$newVersion(name='2011-12',
 \end{example}
 
 \subsection{Building the document}
+The \code{Project\$build} function will build the newest version. The \code{version} parameter will allow for building of older versions. Values of class type \code{character} will build a version with a matching name, values of class type \code{numeric} will build the version corresponding the order in which it was created.
+
 \begin{example}
 myProject$build()
 \end{example}
 
 \subsection{Releasing the document}
+Lastly, the \code{Project\$release} method will release the last built file(s). From a file system perspective, this method will copy the last built file to the release directory (as specified by the \code{Project\$ReleaseDir} attribute). Internally, the minor version number will be incremented so that any subsequent builds for this version will be done in a new directory. Similarly to the \code{Project\$build} method, a \code{version} parameter can be specified to release an older version.
+
 \begin{example}
 myProject$release()
 \end{example}
@@ -177,20 +186,29 @@ myProject$release()
 \framebox[\textwidth]{\raisebox{0in}{\rule{0in}{1in}}%
 \includegraphics[width=\textwidth,trim=1cm 4cm 1cm 3cm,clip=true]{rbloggers.pdf}}%
 \caption{\label{figure:rbloggers}%
-Output from the R-Bloggers example.}%
+Output from the R-Bloggers demo.}%
 \end{figure}
 
 
-\section{Custom builders}
-The \pkg{makeR} package includes builders for managing Sweave (.rnw) and \LaTeX{} (.tex) documents. A builder using the \pkg{cacheSweave} driver for Sweave is also included. However, the \pkg{makeR} package is designed to be extensible. By specifying the \code{builder} parameter on the \code{build} method, the user can define their own custom builder. The function requires two parameters, \code{project} and \code{theenv}. The former is simply the \code{Project} that is currently being built. The latter is an R environment with all the appropriate properties set. Any other parameters are passed from the \code{build} function to the \code{builder}. The following function builds projects where the input is an arbitrary R script file and the output are PNG image files. 
+\section{Builders}
+The \pkg{makeR} package includes a number of builders for various document types. The default builder is \code{builder.rnw} but can be overwritten for your environment using the \code{setDefaultBuilder} function or by specifying the \code{builder} parameter to the \code{Project\$build} method. The included builders are:
+\begin{itemize}
+	\item \code{builder.rnw} used for building Sweave (.rnw) files.
+	\item \code{builder.tex} used for building \LaTeX{} (.tex) files.
+	\item \code{builder.cacheSweave} is similar to Sweave expect will support the \pkg{cacheSweave} \citep{cacheSweave} package and the caching of R code chunks.
+	\item \code{builder.knitr} Uses the \pkg{knitr} \citep{knitr} package for building. This new package provides options for many other output types in addition to PDFs using \LaTeX{} including HTML and markdown. The default behavior for this builder is to look for Sweave (.rnw) files and process them using the \code{knit} function. To use other file types it is important to specify the \code{Project\$SourceFile} attribute and the \code{output} parameter to the \code{Project\$build} method. Otherwise the builder will not be able to locate the appropriate files to build.
+\end{itemize}
+Though the \pkg{makeR} package includes builders for for the most common document types, it has been designed to be extensible. A builder function requires two parameters, \code{project} and \code{theenv}. The former is simply the \code{Project} that is currently being built. The latter is an R environment with all the appropriate properties set. Any other parameters are passed from the \code{Project\$build} function to the \code{builder}. The following function builds projects where the input is an arbitrary R script file and the output are PNG image files. 
 
 \begin{example}
 builder.png <- function(project, theenv, ...) \{
-  sourceFile = ifelse(is.null(project$SourceFile), 
+  sourceFile = ifelse(
+     is.null(project$SourceFile), 
     '.r$', project$SourceFile)
   wd = eval(getwd(), envir=theenv)
-  files = list.files(path=wd, pattern=sourceFile,
-    ignore.case=TRUE)
+  files = list.files(path=wd,
+      pattern=sourceFile,
+      ignore.case=TRUE)
   for(i in seq_len(length(files))) \{
     sys.source(files[i], envir=theenv)
   \}
@@ -200,6 +218,10 @@ builder.png <- function(project, theenv, ...) \{
 \end{example}
 
 %\section{Summary}
+
+
+\section{Debugging}
+The \pkg{makeR} package provides a number of facilities to help debug errors in the build process. First, all output is redirected to a log file in the build directory. Secondly, the build process is done in a new R environment. This environment is also saved to the build directory regardless if the builder method returns successfully or not. Lastly, each \code{Version} class has a method \code{assignProperties} that will assign the project and version properties to the global environment so the the user's global environment matches the environment passed to the builder function.  
 
 
 \section{Package development}
