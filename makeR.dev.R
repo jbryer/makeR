@@ -2,11 +2,11 @@ install.packages(c('devtools', 'roxygen2'), repos=c('http://cran.r-project.org')
 
 require(devtools)
 require(roxygen2)
+install_github('knitr', 'yihui')
 
 ################################################################################
 #Package building
 setwd("~/Dropbox/Projects") #Mac
-document("makeR", clean=TRUE)
 document("makeR")
 check_doc("makeR")
 build("makeR", binary=FALSE)
@@ -25,9 +25,11 @@ isAutoSave()
 setAutoSave(FALSE)
 isAutoOpen()
 setAutoOpen(FALSE)
+getDefaultBuilder()
 
 demo('rbloggers')
 demo('stocks')
+demo('makeR-knitr')
 
 browseVignettes()
 vignette('makeR')
