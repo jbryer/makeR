@@ -138,7 +138,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		invisible()
 	}
 	pv$rebuild <- function(version=NULL, saveEnv=TRUE, bulder=builder.rnw, sourceFile=pv$SourceFile, ...) {
-		buildVersion(pv, version=version, saveEnv=saveEnv, bulder=builder, clean=FALSE, sourceFile=sourceFile, ...)
+		buildVersion(pv, version.major=version, saveEnv=saveEnv, bulder=builder, clean=FALSE, sourceFile=sourceFile, ...)
 		if(isAutoSave()) {
 			pv$save()
 		}
