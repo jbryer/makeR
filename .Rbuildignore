@@ -1,0 +1,8 @@
+*.graffle
+Google.R
+makeR.dev.R
+*.Rproj
+.Rproj.user
+.gitignore
+.git
+.Rhistory
