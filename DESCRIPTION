@@ -2,8 +2,8 @@ Package: makeR
 Type: Package
 Title: Package for managing projects with multiple versions derived from a
     single source repository.
-Version: 0.9
-Date: 2012-01-05
+Version: 1.0
+Date: 2012-02-16
 Author: Jason Bryer <jason@bryer.org>
 Maintainer: Jason Bryer <jason@bryer.org>
 Description: An R package to help manage R projects (e.g. Sweave reports) where

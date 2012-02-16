@@ -1,11 +1,13 @@
 install.packages(c('devtools', 'roxygen2'), repos=c('http://cran.r-project.org'))
+install_github('knitr', 'yihui')
 
 require(devtools)
 require(roxygen2)
-install_github('knitr', 'yihui')
+require(knitr)
 
 ################################################################################
 #Package building
+setwd("C:/Dropbox/My Dropbox/Projects") #Windows
 setwd("~/Dropbox/Projects") #Mac
 document("makeR")
 check_doc("makeR")
