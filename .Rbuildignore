@@ -1,8 +1,9 @@
-*.graffle
+.graffle
 Google.R
 makeR.dev.R
-*.Rproj
+.Rproj
 .Rproj.user
 .gitignore
 .git
 .Rhistory
+Sweave.sty

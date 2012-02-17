@@ -1,11 +1,11 @@
 \name{Project}
+\alias{Project}
 \alias{addProperty}
 \alias{build}
 \alias{getProperties}
 \alias{getReleases}
 \alias{newVersion}
 \alias{openRelease}
-\alias{Project}
 \alias{rebuild}
 \alias{release}
 \alias{removeProperty}
