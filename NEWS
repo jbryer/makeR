@@ -1,3 +1,11 @@
+makeR 1.0.1
+===========
+
+* Fixed an issue with modifications to any files in the source directory would cause
+  an error indicating files in the build directory were modified. A comparison of
+  modification dates was added if the md5 checksums do not match.
+* Removed reference to Sweave.sty in rbloggers demo.
+
 makeR 1.0
 =========
 
