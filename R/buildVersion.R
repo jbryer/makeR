@@ -54,9 +54,11 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaul
 	srcFiles = list.files(paste(pv$ProjectDir, '/', pv$SourceDir, '/', sep=''))
 	for(f in srcFiles) { 
 		#Check to make sure the source files have been modified
+		src.fi = file.info(paste(pv$ProjectDir, '/', pv$SourceDir, '/', f, sep=''))
+		dst.fi = file.info(paste(buildDir, '/', f, sep=''))
 		src.md5 = md5sum(paste(pv$ProjectDir, '/', pv$SourceDir, '/', f, sep=''))
 		dst.md5 = md5sum(paste(buildDir, '/', f, sep=''))
-		if(!is.na(dst.md5) & dst.md5 != src.md5) {
+		if(!is.na(dst.md5) & dst.md5 != src.md5 & src.fi$mtime < dst.fi$mtime) {
 			stop(paste('The source file ', f, ' has been modified in the build directory. ',
 					   'Specify clean=TRUE to overwrite perform a clean build.', sep=''))
 		}
