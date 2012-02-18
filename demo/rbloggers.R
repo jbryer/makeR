@@ -14,8 +14,6 @@ unlink(projectDir, force=TRUE, recursive=TRUE)
 dir.create(paste(projectDir, '/source', sep=''), showWarnings=FALSE, recursive=TRUE)
 file.copy(paste(getwd(), '/rbloggers/rbloggers.Rnw', sep=''), 
 		  paste(projectDir, '/source/rbloggers.Rnw', sep=''))
-file.copy(paste(getwd(), '/rbloggers/Sweave.sty', sep=''), 
-		  paste(projectDir, '/source/Sweave.sty', sep=''))
 
 ## Create a new makeR project
 myProject = Project(name="RBloggers", projectDir=projectDir, properties=list(
