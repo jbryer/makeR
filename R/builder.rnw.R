@@ -35,7 +35,7 @@ builder.rnw <- function(project, theenv, fork=TRUE, debug=TRUE, ...) {
 		Sys.sleep(sleeptime)
 		texfile = paste(substr(file, 1, (nchar(file) - 4)), ".tex", sep = "")
 		message(paste("Running texi2pdf on ", texfile, "...\n", sep=''))
-		texi2pdf(texfile, quiet=FALSE)
+		texi2pdf(texfile, quiet=FALSE, clean=TRUE)
 		built = c(built, paste(substr(file, 1, (nchar(file) - 4)), ".pdf", sep = ""))
 		Sys.sleep(sleeptime)
 	}
