@@ -70,7 +70,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaul
 	
 	wd = eval(setwd(buildDir), envir=buildEnv)
 	
-	cat(paste('Bulding version ', majorNum, '.', minorNum, '-', buildNum, '\n', sep=''))
+	cat(paste('Building version ', majorNum, '.', minorNum, '-', buildNum, '\n', sep=''))
 	if(is.na(name)) {
 		eval(sink(paste('build.', majorNum, '.', minorNum, '-', buildNum, '.log', sep=''), 
 			 append=TRUE, split=FALSE), envir=buildEnv)
