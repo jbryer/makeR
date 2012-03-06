@@ -2,7 +2,7 @@ Package: makeR
 Type: Package
 Title: Package for managing projects with multiple versions derived from a
     single source repository.
-Version: 1.0.1
+Version: 1.0.2
 Date: 2012-02-19
 Author: Jason Bryer <jason@bryer.org>
 Maintainer: Jason Bryer <jason@bryer.org>
@@ -34,3 +34,4 @@ Collate:
     'builder.cacheSweave.R'
     'makeR.R'
     'builder.knitr.R'
+    'builder.rnw.native.R'

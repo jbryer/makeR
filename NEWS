@@ -1,3 +1,11 @@
+makeR 1.0.2
+===========
+
+* Added builder.rnw.native builder that will use system calls to pdflatex instead
+  of texi2dvi. This will avoid an issue with file permissions when running
+  texi2dvi on RStudio server edition on a Linux server.
+* Fixed various typos.
+
 makeR 1.0.1
 ===========
 
