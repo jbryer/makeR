@@ -9,9 +9,10 @@
 #' @param builder the builder function to use.
 #' @param clean if TRUE all files in the build directory will be deleted before building.
 #' @param sourceFile the name of the source file to build.
+#' @param tologfile if TRUE, the build messages will be saved to a log file.
 #' @param ... other non-specified parameters
 buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaultBuilder(), 
-						 clean=FALSE, sourceFile=pv$SourceFile, ...) {
+						 clean=FALSE, tologfile=TRUE, sourceFile=pv$SourceFile, ...) {
 	buildNum = pv$CurrentBuild + 1
 	cv = NULL
 	if(is.null(version.major)) {
@@ -71,14 +72,16 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaul
 	wd = eval(setwd(buildDir), envir=buildEnv)
 	
 	cat(paste('Building version ', majorNum, '.', minorNum, '-', buildNum, '\n', sep=''))
-	if(is.na(name)) {
-		eval(sink(paste('build.', majorNum, '.', minorNum, '-', buildNum, '.log', sep=''), 
-			 append=TRUE, split=FALSE), envir=buildEnv)
-	} else {
-		eval(sink(paste('build.', name, '.', minorNum, '-', buildNum, '.log', sep=''), 
-			 append=TRUE, split=FALSE), envir=buildEnv)
+	if(tologfile) {
+		if(is.na(name)) {
+			eval(sink(paste('build.', majorNum, '.', minorNum, '-', buildNum, '.log', sep=''), 
+				 append=TRUE, split=FALSE), envir=buildEnv)
+		} else {
+			eval(sink(paste('build.', name, '.', minorNum, '-', buildNum, '.log', sep=''), 
+				 append=TRUE, split=FALSE), envir=buildEnv)
+		}
 	}
-
+	
 	success = FALSE
 	filesBuilt = NULL
 	try( {
@@ -87,7 +90,7 @@ buildVersion <- function(pv, version.major=NULL, saveEnv=TRUE, builder=getDefaul
 		success = TRUE
 	})
 	
-	sink()
+	if(tologfile) { sink() }
 	
 	if(saveEnv) {
 		rdafile = paste('build.', majorNum, '.', minorNum, '-', buildNum, '.Rda', sep='')
