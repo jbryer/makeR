@@ -22,6 +22,7 @@ AUTOOPEN <- TRUE
 DEFAULT_BUILDER <- NULL
 
 .onAttach <- function(libname, pkgname) {
+	#TODO: use getOption instead
 	pkgEnv = pos.to.env(match('package:makeR', search()))
 	packageStartupMessage(paste("Auto saving of PROJECT.xml is ", 
 			  ifelse(makeR:::AUTOOPEN, "enabled", "disabled"),
