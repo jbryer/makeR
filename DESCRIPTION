@@ -36,4 +36,3 @@ Collate:
     'builder.knitr.R'
     'builder.rnw.native.R'
     'VariableUI.r'
-    'getPassword.r'
