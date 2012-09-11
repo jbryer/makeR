@@ -4,7 +4,7 @@
 \usage{
   buildVersion(pv, version.major = NULL, saveEnv = TRUE,
     builder = getDefaultBuilder(), clean = FALSE,
-    sourceFile = pv$SourceFile, ...)
+    tologfile = TRUE, sourceFile = pv$SourceFile, ...)
 }
 \arguments{
   \item{pv}{the Project}
@@ -21,6 +21,9 @@
   will be deleted before building.}
 
   \item{sourceFile}{the name of the source file to build.}
+
+  \item{tologfile}{if TRUE, the build messages will be
+  saved to a log file.}
 
   \item{...}{other non-specified parameters}
 }
