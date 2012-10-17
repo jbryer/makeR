@@ -15,6 +15,7 @@
 #'                            This defaults to the .GlobalEnv.
 #'    \item \code{debug} - Sets the working directory and assigns properties so
 #'                         that R code from this version can be run in interactive mode.
+#'             \code{minor} - the minor version used for setting the working directory.
 #' }
 #'
 #' @param pv the Project
@@ -106,9 +107,12 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 			assign(names(version$Properties)[i], p, envir=theenv)
 		}
 	}
-	version$debug <- function(theenv=.GlobalEnv) {
+	version$debug <- function(theenv=.GlobalEnv, minor=NULL) {
 		version$assignProperties()
-		wd <- paste(pv$ProjectDir, '/', pv$BuildDir, '/', version$Name, '.', version$Minor, sep='')
+		if(is.null(minor)) {
+			minor <- version$Minor
+		}
+		wd <- paste(pv$ProjectDir, '/', pv$BuildDir, '/', version$Name, '.', minor, sep='')
 		cat('Setting working directory...\n'); cat(wd); cat('\n')
 		setwd(wd)
 	}

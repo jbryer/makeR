@@ -202,8 +202,8 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	pv$openRelease <- function(file) {
 		system(paste("open \"", pv$ProjectDir, "/", pv$ReleaseDir ,"/", file, sep=''))
 	}
-	pv$debug <- function(theenv=.GlobalEnv) {
-		pv$Versions[[length(pv$Versions)]]$debug(theenv)
+	pv$debug <- function(...) {
+		pv$Versions[[length(pv$Versions)]]$debug(...)
 	}
 	
 	pv <- list2env(pv)

@@ -31,6 +31,7 @@
   This defaults to the .GlobalEnv.  \item \code{debug} -
   Sets the working directory and assigns properties so that
   R code from this version can be run in interactive mode.
-  }
+  \code{minor} - the minor version used for setting the
+  working directory. }
 }
 
