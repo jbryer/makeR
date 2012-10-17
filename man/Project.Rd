@@ -111,7 +111,9 @@
   \item \code{getReleases} Returns a list of released
   files.  \item \code{openRelease} Opens the given released
   file with the system's default application.  \code{file}
-  - The released file to open. }
+  - The released file to open.  \item \code{debug} Sets
+  working directory and assigns properties for the latest
+  version so R code can be run in interactive mode. }
 }
 \examples{
 \dontrun{

@@ -13,6 +13,8 @@
 #'    \item \code{assignProperties} - Sets the project and version properties.
 #'            \code{theenv} - the envirnment to which the properties will be assigned.
 #'                            This defaults to the .GlobalEnv.
+#'    \item \code{debug} - Sets the working directory and assigns properties so
+#'                         that R code from this version can be run in interactive mode.
 #' }
 #'
 #' @param pv the Project
@@ -103,6 +105,12 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 			cat(paste(names(version$Properties)[i], ' = ', p[[1]]), '\n', sep='')
 			assign(names(version$Properties)[i], p, envir=theenv)
 		}
+	}
+	version$debug <- function(theenv=.GlobalEnv) {
+		version$assignProperties()
+		wd <- paste(pv$ProjectDir, '/', pv$BuildDir, '/', version$Name, '.', version$Minor, sep='')
+		cat('Setting working directory...\n'); cat(wd); cat('\n')
+		setwd(wd)
 	}
 	
 	version <- list2env(version)

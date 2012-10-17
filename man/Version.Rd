@@ -28,6 +28,9 @@
   property name.  \item \code{assignProperties} - Sets the
   project and version properties.  \code{theenv} - the
   envirnment to which the properties will be assigned.
-  This defaults to the .GlobalEnv. }
+  This defaults to the .GlobalEnv.  \item \code{debug} -
+  Sets the working directory and assigns properties so that
+  R code from this version can be run in interactive mode.
+  }
 }
 

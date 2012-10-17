@@ -65,6 +65,8 @@
 #'    \item \code{getReleases} Returns a list of released files.
 #'    \item \code{openRelease} Opens the given released file with the system's default application.
 #'            \code{file} - The released file to open.
+#'    \item \code{debug} Sets working directory and assigns properties for the latest
+#'                       version so R code can be run in interactive mode.
 #' }
 #'
 #' @aliases addProperty build getProperties getReleases newVersion openRelease 
@@ -199,6 +201,9 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	}
 	pv$openRelease <- function(file) {
 		system(paste("open \"", pv$ProjectDir, "/", pv$ReleaseDir ,"/", file, sep=''))
+	}
+	pv$debug <- function(theenv=.GlobalEnv) {
+		pv$Versions[[length(pv$Versions)]]$debug(theenv)
 	}
 	
 	pv <- list2env(pv)
