@@ -246,6 +246,33 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 	doc <- xmlTreeParse(pv$ProjectFile, getDTD=FALSE)
 	root <- xmlRoot(doc)
 	
+	pv$SourceFile = NULL
+	if('sourceFile' %in% names(xmlAttrs(root))) {
+		pv$SourceFile = xmlAttrs(root)[['sourceFile']]
+	}
+	pv$ProjectName = ''
+	if('name' %in% names(xmlAttrs(root))) {
+		pv$ProjectName = xmlAttrs(root)[['name']]
+	} 
+	
+	if('buildDir' %in% names(xmlAttrs(root))) {
+		pv$BuildDir = xmlAttrs(root)[['buildDir']]
+	} else {
+		pv$BuildDir = 'build'
+	}
+	
+	if('sourceDir' %in% names(xmlAttrs(root))) {
+		pv$SourceDir = xmlAttrs(root)[['sourceDir']]
+	} else {
+		pv$SourceDir = 'source'
+	}
+	
+	if('releaseDir' %in% names(xmlAttrs(root))) {
+		pv$ReleaseDir = xmlAttrs(root)[['releaseDir']]
+	} else {
+		pv$ReleaseDir = 'release'
+	}
+	
 	pv$Properties <- list()
 	properties = which(xmlSApply(root, xmlName) == 'property')
 	for(i in seq_len(length(properties))) {
@@ -272,15 +299,6 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 		}
 	}
 	
-	versions = root[['versions']]
-	pv$Versions = list()
-	if(length(versions) > 0) {
-		for(ver in 1:length(versions)) {
-			v = makeR:::Version(pv, xml=versions[[ver]])
-			pv$Versions[[as.character(v$Major)]] = v
-		}
-	}
-	
 	builds = root[['builds']]
 	pv$Builds = list()
 	if(!is.null(builds)) {
@@ -292,31 +310,13 @@ parseProjectXML <- function(projectDir=getwd(), filename="PROJECT.xml") {
 	}
 	pv$CurrentBuild = length(pv$Builds)
 	
-	pv$SourceFile = NULL
-	if('sourceFile' %in% names(xmlAttrs(root))) {
-		pv$SourceFile = xmlAttrs(root)[['sourceFile']]
-	}
-	pv$ProjectName = ''
-	if('name' %in% names(xmlAttrs(root))) {
-		pv$ProjectName = xmlAttrs(root)[['name']]
-	} 
-	
-	if('buildDir' %in% names(xmlAttrs(root))) {
-		pv$BuildDir = xmlAttrs(root)[['buildDir']]
-	} else {
-		pv$BuildDir = 'build'
-	}
-	
-	if('sourceDir' %in% names(xmlAttrs(root))) {
-		pv$SourceDir = xmlAttrs(root)[['sourceDir']]
-	} else {
-		pv$SourceDir = 'source'
-	}
-	
-	if('releaseDir' %in% names(xmlAttrs(root))) {
-		pv$ReleaseDir = xmlAttrs(root)[['releaseDir']]
-	} else {
-		pv$ReleaseDir = 'release'
+	versions = root[['versions']]
+	pv$Versions = list()
+	if(length(versions) > 0) {
+		for(ver in 1:length(versions)) {
+			v = makeR:::Version(pv, xml=versions[[ver]])
+			pv$Versions[[as.character(v$Major)]] = v
+		}
 	}
 	
 	return(pv)
