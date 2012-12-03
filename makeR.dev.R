@@ -2,8 +2,8 @@ install.packages(c('devtools', 'roxygen2'), repos=c('http://cran.r-project.org')
 install_github('knitr', 'yihui')
 
 require(devtools)
-require(roxygen2)
-require(knitr)
+#require(roxygen2)
+#require(knitr)
 
 ################################################################################
 #Package building

@@ -8,3 +8,5 @@ makeR.dev.R
 .Rhistory
 Sweave.sty
 ^\.Rproj\.user$
+^.*\.Rproj$
+Presentations
