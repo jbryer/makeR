@@ -176,7 +176,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 		invisible()
 	}
 	pv$getProperties <- function() {
-		return(unlist(pv$Properites))
+		return(unlist(pv$Properties))
 	}
 	pv$addProperty <- function(name, value) { 
 		p <- pv$Properties
@@ -189,7 +189,7 @@ Project <- function(projectDir=getwd(), name=NULL, sourceDir="source",
 	}
 	pv$removeProperty <- function(name) {
 		p <- pv$Properties
-		p[[name]] <<- NULL
+		p[[name]] <- NULL
 		assign('Properties', p, envir=pv)
 		if(isAutoSave()) {
 			pv$save()

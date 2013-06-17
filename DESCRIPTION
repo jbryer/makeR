@@ -6,6 +6,8 @@ Version: 1.0.3
 Date: 2012-02-19
 Author: Jason Bryer <jason@bryer.org>
 Maintainer: Jason Bryer <jason@bryer.org>
+URL: http://jason.bryer.org/makeR, http://github.com/jbryer/makeR
+BugReports: https://github.com/jbryer/makeR/issues
 Description: An R package to help manage R projects (e.g. Sweave reports) where
     multiple versions are created based upon a single source repository. For
     example, a monthly report where each versions is identitcal with the

@@ -85,7 +85,7 @@ Version <- function(pv, name=NA, properties=list(), xml=NULL) {
 	}
 	version$removeProperty <- function(name) {
 		p <- version$Properties
-		p[[name]] <<- NULL
+		p[[name]] <- NULL
 		assign('Properties', p, envir=version)
 		assign('Versions', pv$Versions, envir=version$pv)
 		if(isAutoSave()) {
