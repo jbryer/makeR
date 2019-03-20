@@ -6,7 +6,7 @@
 To install the latest development version using `devtools`, type following in R:
 
 		require(devtools)
-		install_github('makeR', 'jbryer')
+		install_github("jbryer/makeR")
 
 The `rbloggers` demo provides a tour of the package.
 
